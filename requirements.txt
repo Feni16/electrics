@@ -1,0 +1,7 @@
+```
+flask
+flask-sqlalchemy
+werkzeug
+python-dotenv
+google-generativeai
+jinja2
