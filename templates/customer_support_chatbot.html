@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Customer Support Chat | Electrics AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{min-height:100vh;background:linear-gradient(135deg,#020617,#0a0f2c);display:flex;align-items:center;justify-content:center;color:#e5e7eb;}
+.container{width:400px;background:rgba(255,255,255,0.06);backdrop-filter:blur(15px);border-radius:25px;box-shadow:0 0 30px rgba(125,211,252,0.25);padding:20px;display:flex;flex-direction:column;}
+h1{text-align:center;color:#7dd3fc;margin-bottom:15px;}
+#chatWindow{flex:1;height:300px;overflow-y:auto;background:rgba(255,255,255,0.03);padding:10px;border-radius:20px;margin-bottom:10px;}
+.chat-message{margin-bottom:10px;display:flex;}
+.chat-message.user{justify-content:flex-end;}
+.chat-message p{max-width:70%;padding:8px 12px;border-radius:15px;font-size:0.9em;line-height:1.3em;}
+.chat-message.user p{background:#38bdf8;color:#020617;}
+.chat-message.bot p{background:rgba(125,211,252,0.15);color:#cbd5f5;}
+.chat-input{display:flex;}
+.chat-input input[type="text"]{flex:1;padding:10px;border-radius:20px;border:none;background:rgba(2,6,23,0.6);color:white;margin-right:8px;}
+.chat-input button{border-radius:20px;padding:8px 12px;border:none;background:#38bdf8;color:#020617;font-weight:600;cursor:pointer;}
+.chat-input button:hover{background:#7dd3fc;}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🤖 Customer Support AI</h1>
+<div id="chatWindow"></div>
+<div class="chat-input">
+<input type="text" id="chatInput" placeholder="Type your message..." onkeydown="if(event.key==='Enter'){sendChat()}">
+<button onclick="sendChat()">Send</button>
+</div>
+</div>
+
+<script>
+function addMessage(message, sender){
+  let chatWindow = document.getElementById("chatWindow");
+
+  let msgDiv = document.createElement("div");
+  msgDiv.classList.add("chat-message", sender);
+
+  let p = document.createElement("p");
+  p.innerText = message;
+
+  msgDiv.appendChild(p);
+  chatWindow.appendChild(msgDiv);
+
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function sendChat(){
+  let input = document.getElementById("chatInput");
+  let message = input.value.trim();
+  if(!message) return;
+
+  addMessage(message, "user");
+  input.value = "";
+
+  fetch("/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message: message })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data);   // debug
+    addMessage(data.reply, "bot");
+  })
+  .catch(err => {
+    console.error(err);
+    addMessage("Server error 😢", "bot");
+  });
+}
+</script>
+</body>
+</html>

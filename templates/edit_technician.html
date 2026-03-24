@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Technician | Admin - TechnoFix AI</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid #38bdf8;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            color: #38bdf8;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        label i {
+            color: #38bdf8;
+            margin-right: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #38bdf8;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #facc15;
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: #facc15;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            background: #ef4444;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .flash-message {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .flash-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            color: #22c55e;
+        }
+
+        .flash-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .current-image {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .current-image img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #38bdf8;
+            object-fit: cover;
+        }
+
+        .readonly-field {
+            background: rgba(255,255,255,0.05);
+            border-color: #64748b;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-edit"></i> Edit Technician</h1>
+        
+        <!-- Flash Messages -->
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            <i class="fas fa-{% if category == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- Edit Form -->
+        <form method="POST">
+            <div class="form-group">
+                <label><i class="fas fa-user"></i> Username *</label>
+                <input type="text" name="username" value="{{ technician.username }}" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-envelope"></i> Email *</label>
+                <input type="email" name="email" value="{{ technician.email }}" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> Phone</label>
+                    <input type="text" name="phone" value="{{ technician.phone or '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <input type="text" name="location" value="{{ technician.location or '' }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-tools"></i> Specialization</label>
+                <input type="text" name="specialization" value="{{ technician.specialization or '' }}">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label><i class="fas fa-rupee-sign"></i> Salary</label>
+                    <input type="number" step="0.01" name="salary" value="{{ technician.salary or '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-star"></i> Rating</label>
+                    <input type="number" step="0.1" min="0" max="5" name="rating" value="{{ technician.rating or '' }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-circle"></i> Status</label>
+                <select name="status">
+                    <option value="Active" {% if technician.status == 'Active' %}selected{% endif %}>✅ Active</option>
+                    <option value="Busy" {% if technician.status == 'Busy' %}selected{% endif %}>⏳ Busy</option>
+                    <option value="Offline" {% if technician.status == 'Offline' %}selected{% endif %}>📴 Offline</option>
+                    <option value="Inactive" {% if technician.status == 'Inactive' %}selected{% endif %}>❌ Inactive</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-key"></i> Password (leave blank to keep current)</label>
+                <input type="password" name="password" placeholder="Enter new password">
+                <small style="color: #94a3b8; display: block; margin-top: 5px;">Leave blank to keep current password</small>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Technician
+                </button>
+                <a href="{{ url_for('admin_technicians') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Auto-hide flash messages after 5 seconds
+        setTimeout(() => {
+            document.querySelectorAll('.flash-message').forEach(msg => {
+                msg.style.transition = 'opacity 0.5s';
+                msg.style.opacity = '0';
+                setTimeout(() => msg.remove(), 500);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

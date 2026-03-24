@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Chats | Admin - TechnoFix AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: #fff;
+            display: flex;
+        }
+
+        /* ========= SIDEBAR - YOUR ORIGINAL STYLE ========= */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #111827;
+            padding: 30px 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar h2 {
+            color: #38bdf8;
+            margin-bottom: 40px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            transform: translateX(5px);
+        }
+
+        .sidebar a.active {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        /* ========= MAIN CONTENT ========= */
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 30px;
+        }
+
+        /* Top Bar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .welcome h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome p {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .back-btn {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        /* Stats Cards - Like AI Chats Page */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(56, 189, 248, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #38bdf8;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            background: rgba(56, 189, 248, 0.15);
+        }
+
+        .stat-card h4 {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .number {
+            font-size: 28px;
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        /* Search */
+        .search-filter {
+            margin-bottom: 25px;
+        }
+
+        .search-filter input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-filter input:focus {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        /* Chats Grid */
+        .chats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .chat-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .chat-card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+       /* Chat Header - Updated to show date-time below names */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    flex-direction: column;
+    gap: 12px;
+}
+
+.participants {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 15px;
+}
+
+.participant {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.participant.customer {
+    justify-content: flex-start;
+}
+
+.participant.technician {
+    justify-content: flex-end;
+}
+
+.participant-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.participant.customer .participant-avatar {
+    background: #38bdf8;
+    color: #000;
+}
+
+.participant.technician .participant-avatar {
+    background: #22c55e;
+    color: #000;
+}
+
+.participant-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.participant-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.participant.customer .participant-name {
+    color: #38bdf8;
+}
+
+.participant.technician .participant-name {
+    color: #22c55e;
+}
+
+.participant-role {
+    font-size: 10px;
+    color: #94a3b8;
+}
+
+/* Date Time for both customer and technician */
+.participant-datetime {
+    font-size: 10px;
+    color: #94a3b8;
+    font-family: monospace;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.participant-datetime i {
+    font-size: 9px;
+    color: #22c55e;
+}
+
+.vs-icon {
+    color: #64748b;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0 5px;
+}
+
+/* Remove the old chat-time from top right */
+.chat-time {
+    display: none;
+}
+        .booking-info {
+            margin: 12px 0;
+            padding: 10px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 10px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .message-preview {
+            margin: 12px 0;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .user-message {
+            color: #38bdf8;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+        }
+
+        .tech-message {
+            color: #22c55e;
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+        }
+
+        .chat-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .badge-pending { background: #facc15; color: #000; }
+        .badge-in_progress { background: #38bdf8; color: #000; }
+        .badge-completed { background: #22c55e; color: #000; }
+        .badge-rejected { background: #ef4444; color: #fff; }
+
+        .view-btn {
+            background: #38bdf8;
+            color: #000;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .view-btn:hover {
+            background: #facc15;
+            transform: scale(1.05);
+        }
+
+        /* Modal Styles - Like AI Chats Page */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 24px;
+            width: 800px;
+            max-width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid #38bdf8;
+            position: relative;
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #ef4444;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .close-modal:hover {
+            background: #ef4444;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* Modal Sections */
+        .modal-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .modal-section h4 {
+            color: #38bdf8;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .chat-message-full {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .chat-message-full.customer {
+            border-left: 4px solid #38bdf8;
+        }
+
+        .chat-message-full.technician {
+            border-left: 4px solid #22c55e;
+        }
+
+        .message-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .message-content {
+            color: #fff;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px;
+            color: #94a3b8;
+        }
+
+        .no-data i {
+            font-size: 60px;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .live-badge {
+            background: #ef4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            animation: pulse 1.5s infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+        }
+        .loading-spinner i {
+            font-size: 40px;
+            color: #38bdf8;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            .sidebar a span {
+                display: none;
+            }
+            .sidebar h2 span {
+                display: none;
+            }
+            .main {
+                margin-left: 80px;
+            }
+            .chats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- YOUR ORIGINAL SIDEBAR - FULLY PRESERVED -->
+    <div class="sidebar">
+        <h2><i class="fas fa-bolt"></i><span> TechnoFix AI</span></h2>
+        <a href="{{ url_for('admin_dashboard') }}">
+            <i class="fas fa-tachometer-alt"></i><span> Dashboard</span>
+        </a>
+        <a href="{{ url_for('admin_customers') }}">
+            <i class="fas fa-users"></i><span> Customers</span>
+        </a>
+        <a href="{{ url_for('admin_technicians') }}">
+            <i class="fas fa-tools"></i><span> Technicians</span>
+        </a>
+        <a href="{{ url_for('admin_bookings') }}">
+            <i class="fas fa-calendar-check"></i><span> Bookings</span>
+        </a>
+        <a href="{{ url_for('admin_ai_chats') }}">
+            <i class="fas fa-robot"></i><span> AI Chats</span>
+        </a>
+        <a href="{{ url_for('admin_human_chats') }}" class="active">
+            <i class="fas fa-comments"></i><span> Human Chats</span>
+        </a>
+        <a href="{{ url_for('admin_feedback') }}">
+            <i class="fas fa-star"></i><span> Feedback</span>
+        </a>
+        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i><span> Logout</span></a>
+    </div>
+
+    <div class="main">
+        <div class="topbar">
+            <div class="welcome">
+                <h1>Customer ⇔ Technician Chats <span class="live-badge"><i class="fas fa-circle"></i> LIVE</span></h1>
+                <p>Real-time conversations between customers and technicians | Total: {{ total_human_chats | default(0) }} conversations</p>
+            </div>
+            <a href="{{ url_for('admin_dashboard') }}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Stats Cards - Like AI Chats Page -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4><i class="fas fa-comments"></i> Total Human Chats</h4>
+                <div class="number" id="totalChats">{{ total_human_chats | default(0) }}</div>
+            </div>
+            <div class="stat-card">
+                <h4><i class="fas fa-exchange-alt"></i> Active Conversations</h4>
+                <div class="number" id="activeChats">{{ active_human_chats | default(0) }}</div>
+            </div>
+            <div class="stat-card">
+                <h4><i class="fas fa-calendar-day"></i> Today's Messages</h4>
+                <div class="number" id="todayMessages">{{ today_messages | default(0) }}</div>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="🔍 Search by customer name, technician name, service, or message..." onkeyup="filterChats()">
+        </div>
+
+        <!-- Chats Grid - Your Real Data -->
+        <div class="chats-grid" id="chatsGrid">
+            {% if human_chats and human_chats|length > 0 %}
+                {% for chat in human_chats %}
+                <div class="chat-card" onclick='openChatModal({{ chat|tojson|safe }})'>
+                   <div class="chat-header">
+    <div class="participants">
+        <div class="participant customer">
+            <div class="participant-avatar">
+                {{ chat.customer_name[0]|upper if chat.customer_name else 'C' }}
+            </div>
+            <div class="participant-info">
+                <div class="participant-name">{{ chat.customer_name }}</div>
+                <div class="participant-role">Customer</div>
+                <div class="participant-datetime">
+                    <i class="fas fa-clock"></i> {{ chat.last_message_time }}
+                </div>
+            </div>
+        </div>
+        <i class="fas fa-exchange-alt vs-icon"></i>
+        <div class="participant technician">
+            <div class="participant-info" style="text-align: right;">
+                <div class="participant-name">{{ chat.technician_name }}</div>
+                <div class="participant-role">Technician</div>
+                <div class="participant-datetime">
+                    <i class="fas fa-clock"></i> {{ chat.last_message_time }}
+                </div>
+            </div>
+            <div class="participant-avatar">
+                {{ chat.technician_name[0]|upper if chat.technician_name else 'T' }}
+            </div>
+        </div>
+    </div>
+</div>
+                    <div class="booking-info">
+                        <span><i class="fas fa-tools"></i> {{ chat.service_name }}</span>
+                        <span class="badge badge-{{ chat.booking_status|lower }}">{{ chat.booking_status }}</span>
+                        <span><i class="fas fa-comment-dots"></i> {{ chat.message_count }} msgs</span>
+                    </div>
+
+                    <div class="message-preview">
+                        <div class="user-message">
+                            <i class="fas fa-user-circle" style="font-size: 14px;"></i>
+                            <span><strong>{{ chat.customer_name }}:</strong> {{ chat.last_message[:80] }}{% if chat.last_message|length > 80 %}...{% endif %}</span>
+                        </div>
+                        {% if chat.technician_last_message %}
+                        <div class="tech-message">
+                            <i class="fas fa-tools" style="font-size: 14px;"></i>
+                            <span><strong>{{ chat.technician_name }}:</strong> {{ chat.technician_last_message[:80] }}{% if chat.technician_last_message|length > 80 %}...{% endif %}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="chat-footer">
+                        <span><i class="fas fa-hashtag"></i> Booking #{{ chat.booking_id }}</span>
+                        <button class="view-btn" onclick="event.stopPropagation(); openChatModal({{ chat|tojson|safe }})">
+                            <i class="fas fa-eye"></i> View Full
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="no-data">
+                <i class="fas fa-comments"></i>
+                <h3>No Human Chats Found</h3>
+                <p>No conversations between customers and technicians yet.</p>
+                <p style="font-size: 12px; margin-top: 10px;">When customers and technicians start chatting, conversations will appear here.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Chat Modal - Like AI Chats Modal Style -->
+    <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeChatModal()">&times;</span>
+            <h3 style="color:#38bdf8; margin-bottom:20px; text-align:center;">
+                <i class="fas fa-comments"></i> Conversation Details
+            </h3>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        let refreshInterval = null;
+
+        function formatDateTime(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return dateString;
+                return date.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            } catch(e) {
+                return dateString;
+            }
+        }
+
+        function filterChats() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.chat-card');
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const show = text.includes(search);
+                card.style.display = show ? '' : 'none';
+            });
+        }
+
+        function openChatModal(chat) {
+            let content = `
+                <div class="modal-section">
+                    <h4><i class="fas fa-user-friends"></i> Participants</h4>
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div style="flex:1; background: rgba(56,189,248,0.1); padding: 15px; border-radius: 12px;">
+                            <i class="fas fa-user-circle" style="font-size: 24px; color: #38bdf8;"></i>
+                            <p style="margin-top: 10px;"><strong>Customer:</strong> ${escapeHtml(chat.customer_name)}</p>
+                            <p><strong>Role:</strong> Customer</p>
+                        </div>
+                        <div style="flex:1; background: rgba(34,197,94,0.1); padding: 15px; border-radius: 12px;">
+                            <i class="fas fa-tools" style="font-size: 24px; color: #22c55e;"></i>
+                            <p style="margin-top: 10px;"><strong>Technician:</strong> ${escapeHtml(chat.technician_name)}</p>
+                            <p><strong>Role:</strong> Technician</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h4><i class="fas fa-info-circle"></i> Booking Information</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div><strong>Booking ID:</strong> #${chat.booking_id}</div>
+                        <div><strong>Service:</strong> ${escapeHtml(chat.service_name)}</div>
+                        <div><strong>Status:</strong> <span class="badge badge-${chat.booking_status.toLowerCase()}">${chat.booking_status}</span></div>
+                        <div><strong>Total Messages:</strong> ${chat.message_count}</div>
+                        <div><strong>Urgency:</strong> ${escapeHtml(chat.urgency || 'Normal')}</div>
+                        <div><strong>Address:</strong> ${escapeHtml(chat.address || 'N/A')}</div>
+                        <div><strong>Last Activity:</strong> ${formatDateTime(chat.last_message_time)}</div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h4><i class="fas fa-comment-dots"></i> Messages</h4>
+                    <div id="messagesContainer" style="max-height: 400px; overflow-y: auto;">
+                        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><p>Loading messages...</p></div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('modalBody').innerHTML = content;
+            document.getElementById('chatModal').style.display = 'flex';
+            
+            // Load messages
+            loadChatMessages(chat.booking_id);
+        }
+
+        function loadChatMessages(bookingId) {
+            const container = document.getElementById('messagesContainer');
+            
+            fetch(`/admin/get_human_chat_messages/${bookingId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.messages && data.messages.length > 0) {
+                        let html = '';
+                        let lastDate = '';
+                        
+                        data.messages.forEach(msg => {
+                            const msgDate = new Date(msg.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+                            const msgTime = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            
+                            if (msgDate !== lastDate) {
+                                html += `<div style="text-align:center; margin: 15px 0;"><span style="background: #1e293b; padding: 4px 12px; border-radius: 20px; font-size: 11px;">${msgDate}</span></div>`;
+                                lastDate = msgDate;
+                            }
+                            
+                            const isCustomer = msg.sender_role === 'customer';
+                            html += `
+                                <div class="chat-message-full ${isCustomer ? 'customer' : 'technician'}">
+                                    <div class="message-label">
+                                        <i class="fas ${isCustomer ? 'fa-user' : 'fa-tools'}"></i> <strong>${escapeHtml(msg.sender_name)}</strong> • ${msgTime}
+                                    </div>
+                                    <div class="message-content">
+                                        ${escapeHtml(msg.message)}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        
+                        container.innerHTML = html;
+                        container.scrollTop = container.scrollHeight;
+                    } else {
+                        container.innerHTML = `
+                            <div style="text-align:center; padding:40px; color:#94a3b8;">
+                                <i class="fas fa-comment-slash fa-3x"></i>
+                                <p style="margin-top:15px;">No messages yet</p>
+                                <p style="font-size:12px;">Be the first to start a conversation!</p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading messages:', error);
+                    container.innerHTML = `
+                        <div style="text-align:center; padding:40px; color:#ef4444;">
+                            <i class="fas fa-exclamation-triangle fa-3x"></i>
+                            <p style="margin-top:15px;">Error loading messages</p>
+                            <p style="font-size:12px;">Please try again later</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function refreshStats() {
+            fetch('/api/live_chat_data')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('totalChats').innerText = data.total_human_chats || 0;
+                        document.getElementById('activeChats').innerText = data.active_human_chats || 0;
+                        document.getElementById('todayMessages').innerText = data.today_messages || 0;
+                    }
+                })
+                .catch(error => console.log('Refresh error:', error));
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('chatModal');
+            if (event.target === modal) {
+                closeChatModal();
+            }
+        };
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeChatModal();
+            }
+        });
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshStats();
+            refreshInterval = setInterval(refreshStats, 10000);
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (refreshInterval) clearInterval(refreshInterval);
+        });
+    </script>
+</body>
+</html>

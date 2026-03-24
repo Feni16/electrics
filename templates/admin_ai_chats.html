@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chats | Admin - TechnoFix AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: #fff;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #111827;
+            padding: 30px 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #38bdf8;
+            margin-bottom: 40px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            transform: translateX(5px);
+        }
+
+        .sidebar a.active {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .welcome h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(56, 189, 248, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #38bdf8;
+        }
+
+        .stat-card h4 {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .number {
+            font-size: 28px;
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        .search-filter {
+            margin-bottom: 25px;
+        }
+
+        .search-filter input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-filter input:focus {
+            border-color: #38bdf8;
+        }
+
+        .chats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 20px;
+        }
+
+        .chat-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .chat-card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .customer-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            color: #000;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            color: #38bdf8;
+            font-size: 16px;
+        }
+
+        .customer-email {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .chat-time {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .message-preview {
+            margin: 15px 0;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .user-message {
+            color: #38bdf8;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+        }
+
+        .ai-message {
+            color: #22c55e;
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+        }
+
+        .chat-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .chat-id {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .view-full-btn {
+            background: #38bdf8;
+            color: #000;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .view-full-btn:hover {
+            background: #facc15;
+            transform: scale(1.05);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 24px;
+            width: 700px;
+            max-width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid #38bdf8;
+            position: relative;
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #ef4444;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .close-modal:hover {
+            background: #ef4444;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .modal-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .modal-section h4 {
+            color: #38bdf8;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .chat-message-full {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .chat-message-full.user {
+            border-left: 4px solid #38bdf8;
+        }
+
+        .chat-message-full.ai {
+            border-left: 4px solid #22c55e;
+        }
+
+        .message-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .message-content {
+            color: #fff;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px;
+            color: #94a3b8;
+        }
+
+        .no-data i {
+            font-size: 60px;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 15px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid #38bdf8;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .live-badge {
+            background: #ef4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            animation: pulse 1.5s infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            .main {
+                margin-left: 80px;
+            }
+            .chats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2><i class="fas fa-bolt"></i> TechnoFix AI</h2>
+        <a href="{{ url_for('admin_dashboard') }}">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        <a href="{{ url_for('admin_customers') }}">
+            <i class="fas fa-users"></i> Customers
+        </a>
+        <a href="{{ url_for('admin_technicians') }}">
+            <i class="fas fa-tools"></i> Technicians
+        </a>
+        <a href="{{ url_for('admin_bookings') }}">
+            <i class="fas fa-calendar-check"></i> Bookings
+        </a>
+        <a href="{{ url_for('admin_ai_chats') }}" class="active">
+            <i class="fas fa-robot"></i> AI Chats
+        </a>
+        <a href="{{ url_for('admin_human_chats') }}">
+            <i class="fas fa-comments"></i> Human Chats
+        </a>
+        <a href="{{ url_for('admin_feedback') }}">
+            <i class="fas fa-star"></i> Feedback
+        </a>
+        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="main">
+        <div class="topbar">
+            <div class="welcome">
+                <h1>AI Conversations</h1>
+                <p>Customer interactions with AI Assistant | Total: {{ total_ai_chats | default(0) }} conversations</p>
+            </div>
+            <a href="{{ url_for('admin_dashboard') }}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4><i class="fas fa-robot"></i> Total Conversations</h4>
+                <div class="number">{{ total_ai_chats | default(0) }}</div>
+            </div>
+            <div class="stat-card">
+                <h4><i class="fas fa-users"></i> Active Users</h4>
+                <div class="number">{{ active_ai_users | default(0) }}</div>
+            </div>
+            <div class="stat-card">
+                <h4><i class="fas fa-calendar-day"></i> Today's Chats</h4>
+                <div class="number">{{ today_chats | default(0) }}</div>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="🔍 Search by customer name, message, or AI reply..." onkeyup="filterChats()">
+        </div>
+
+        <!-- AI Chats Grid -->
+        <div class="chats-grid" id="aiChatsGrid">
+            {% if ai_chats and ai_chats|length > 0 %}
+                {% for chat in ai_chats %}
+                <div class="chat-card" onclick='openChatModal({{ chat|tojson|safe }})'>
+                    <div class="chat-header">
+                        <div class="customer-info">
+                            <div class="customer-avatar">
+                                {{ chat.user.username[0]|upper if chat.user and chat.user.username else 'U' }}
+                            </div>
+                            <div>
+                                <div class="customer-name">{{ chat.user.username if chat.user else 'Unknown User' }}</div>
+                                <div class="customer-email">{{ chat.user.email if chat.user else 'No email' }}</div>
+                            </div>
+                        </div>
+                        <div class="chat-time">{{ chat.created_at.strftime('%d %b %Y, %I:%M %p') if chat.created_at else '' }}</div>
+                    </div>
+
+                    <div class="message-preview">
+                        <div class="user-message">
+                            <i class="fas fa-user-circle" style="font-size: 14px;"></i>
+                            <span><strong>User:</strong> {{ chat.user_message[:80] }}{% if chat.user_message|length > 80 %}...{% endif %}</span>
+                        </div>
+                        <div class="ai-message">
+                            <i class="fas fa-robot" style="font-size: 14px;"></i>
+                            <span><strong>AI:</strong> {{ chat.ai_reply[:80] }}{% if chat.ai_reply|length > 80 %}...{% endif %}</span>
+                        </div>
+                    </div>
+
+                    <div class="chat-footer">
+                        <span class="chat-id">{{ chat.id }}</span>
+                        <button class="view-full-btn" onclick="event.stopPropagation(); openChatModal({{ chat|tojson|safe }})">
+                            <i class="fas fa-eye"></i> View Full
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="no-data">
+                <i class="fas fa-robot"></i>
+                <h3>No AI Chats Found</h3>
+                <p>No conversations with AI yet. Customers need to chat with AI first.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <div class="pagination">
+            {% for p in range(1, total_pages + 1) %}
+                {% if p >= current_page - 2 and p <= current_page + 2 %}
+                <button class="page-btn {% if p == current_page %}active{% endif %}" onclick="changePage({{ p }})">
+                    {{ p }}
+                </button>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3 style="color:#38bdf8; margin-bottom:20px; text-align:center;">
+                <i class="fas fa-robot"></i> AI Conversation Details
+            </h3>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        function openChatModal(chat) {
+            let content = `
+                <div class="modal-section">
+                    <h4><i class="fas fa-user-circle"></i> Customer Information</h4>
+                    <p><b>Name:</b> ${chat.user ? chat.user.username : 'Unknown User'}</p>
+                    <p><b>Email:</b> ${chat.user ? (chat.user.email || 'N/A') : 'N/A'}</p>
+                    <p><b>Phone:</b> ${chat.user ? (chat.user.phone || 'N/A') : 'N/A'}</p>
+                    <p><b>Chat ID:</b> ${chat.id}</p>
+                    <p><b>Date & Time:</b> ${new Date(chat.created_at).toLocaleString()}</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4><i class="fas fa-comment-dots"></i> Conversation</h4>
+                    
+                    <div class="chat-message-full user">
+                        <div class="message-label">
+                            <i class="fas fa-user"></i> <strong>User Message:</strong>
+                        </div>
+                        <div class="message-content">
+                            ${escapeHtml(chat.user_message)}
+                        </div>
+                    </div>
+                    
+                    <div class="chat-message-full ai">
+                        <div class="message-label">
+                            <i class="fas fa-robot"></i> <strong>AI Assistant Response:</strong>
+                        </div>
+                        <div class="message-content">
+                            ${escapeHtml(chat.ai_reply)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('modalBody').innerHTML = content;
+            document.getElementById('chatModal').style.display = 'flex';
+        }
+
+        function filterChats() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.chat-card');
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const show = text.includes(search);
+                card.style.display = show ? '' : 'none';
+                if (show) visibleCount++;
+            });
+        }
+
+        function changePage(page) {
+            window.location.href = `{{ url_for('admin_ai_chats') }}?page=${page}`;
+        }
+
+        function closeModal() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('chatModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

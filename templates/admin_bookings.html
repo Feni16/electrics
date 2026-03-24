@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings | Admin - TechnoFix AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Same styles as admin_technicians.html plus booking specific styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: #fff;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #111827;
+            padding: 30px 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #38bdf8;
+            margin-bottom: 40px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            transform: translateX(5px);
+        }
+
+        .sidebar a.active {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            color: #38bdf8;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .status-tab {
+            padding: 10px 20px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid #38bdf8;
+            border-radius: 30px;
+            color: #fff;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .status-tab:hover,
+        .status-tab.active {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-pending {
+            background: #facc15;
+            color: #000;
+        }
+        .status-in_progress {
+            background: #38bdf8;
+            color: #000;
+        }
+        .status-completed {
+            background: #22c55e;
+            color: #000;
+        }
+        .status-rejected {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .urgency-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+        }
+        .urgency-normal {
+            background: #475569;
+            color: #fff;
+        }
+        .urgency-urgent {
+            background: #f97316;
+            color: #fff;
+        }
+        .urgency-emergency {
+            background: #dc2626;
+            color: #fff;
+            animation: blink 1s infinite;
+        }
+
+        .problem-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #38bdf8;
+        }
+
+        .problem-image:hover {
+            transform: scale(3);
+            box-shadow: 0 0 20px #38bdf8;
+            z-index: 10;
+            border-radius: 8px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            padding: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1300px;
+        }
+
+        th {
+            background: #38bdf8;
+            color: #000;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: #cbd5e1;
+        }
+
+        tr {
+            transition: 0.3s;
+        }
+
+        tr:hover {
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .action-btn {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .delete-btn {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .delete-btn:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .page-btn {
+            padding: 8px 15px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid #38bdf8;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        /* Image Modal */
+        #imageModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modalImage {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        /* Booking Details Modal */
+        #bookingDetailsModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 20px;
+            width: 600px;
+            max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #38bdf8;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #38bdf8;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            font-size: 24px;
+            color: #ef4444;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .detail-section h4 {
+            color: #38bdf8;
+            margin-bottom: 10px;
+        }
+
+        .detail-section p {
+            margin: 5px 0;
+        }
+
+        .detail-section strong {
+            color: #94a3b8;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2><i class="fas fa-bolt"></i> TechnoFix AI</h2>
+        <a href="{{ url_for('admin_dashboard') }}" {% if request.endpoint == 'admin_dashboard' %}class="active"{% endif %}>
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        <a href="{{ url_for('admin_customers') }}" {% if request.endpoint == 'admin_customers' %}class="active"{% endif %}>
+            <i class="fas fa-users"></i> Customers
+        </a>
+        <a href="{{ url_for('admin_technicians') }}" {% if request.endpoint == 'admin_technicians' %}class="active"{% endif %}>
+            <i class="fas fa-tools"></i> Technicians
+        </a>
+        <a href="{{ url_for('admin_bookings') }}" {% if request.endpoint == 'admin_bookings' %}class="active"{% endif %}>
+            <i class="fas fa-calendar-check"></i> Bookings
+        </a>
+        <a href="{{ url_for('admin_ai_chats') }}" {% if request.endpoint == 'admin_ai_chats' %}class="active"{% endif %}>
+            <i class="fas fa-robot"></i> AI Chats
+        </a>
+        <!-- Human Chats Link -->
+        <a href="{{ url_for('admin_human_chats') }}" {% if request.endpoint == 'admin_human_chats' %}class="active"{% endif %}>
+            <i class="fas fa-comments"></i> Customer ⇔ Tech Chats
+        </a>
+        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+
+    <div class="main">
+        <div class="topbar">
+            <div class="welcome">
+                <h1>Booking Management</h1>
+                <p>View and manage all bookings</p>
+            </div>
+            <a href="{{ url_for('admin_dashboard') }}" style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; padding: 10px 20px; border-radius: 30px; text-decoration: none;"><i class="fas fa-arrow-left"></i> Back</a>
+        </div>
+
+        <div class="page-header">
+            <h1><i class="fas fa-calendar-check"></i> All Bookings</h1>
+        </div>
+
+        <div class="status-tabs">
+            <a href="{{ url_for('admin_bookings', status='all') }}" class="status-tab {% if status == 'all' %}active{% endif %}">All</a>
+            <a href="{{ url_for('admin_bookings', status='pending') }}" class="status-tab {% if status == 'pending' %}active{% endif %}">Pending</a>
+            <a href="{{ url_for('admin_bookings', status='in_progress') }}" class="status-tab {% if status == 'in_progress' %}active{% endif %}">In Progress</a>
+            <a href="{{ url_for('admin_bookings', status='completed') }}" class="status-tab {% if status == 'completed' %}active{% endif %}">Completed</a>
+            <a href="{{ url_for('admin_bookings', status='rejected') }}" class="status-tab {% if status == 'rejected' %}active{% endif %}">Rejected</a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Customer</th>
+                        <th>Room</th>
+                        <th>Address</th>
+                        <th>Urgency</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings_list %}
+                    <tr>
+                        <td>#{{ booking.id }}</td>
+                        <td onclick="event.stopPropagation()">
+                            {% if booking.image_filename %}
+                                <img src="{{ url_for('static', filename='uploads/problems/' + booking.image_filename) }}" 
+                                     class="problem-image"
+                                     onclick="openImage(this.src); event.stopPropagation();"
+                                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><rect width=%2240%22 height=%2240%22 fill=%22%23333%22/><text x=%225%22 y=%2225%22 fill=%22%2394a3b8%22 font-size=%2212%22>Error</text></svg>'">
+                            {% else %}
+                                <span style="color: #64748b;">No Image</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ booking.title }}</td>
+                        <td>{{ booking.description|truncate(30) if booking.description else 'N/A' }}</td>
+                        <td>
+                             <strong>{{ booking.customer_name }}</strong><br>
+                             <small style="color:#94a3b8;">{{ booking.customer_phone }}</small>
+                             <div style="font-size:11px;color:#64748b;">{{ booking.customer_email }}</div>
+                        </td>  
+                    
+                        <td>{{ booking.room if booking.room else 'N/A' }}</td>
+                        <td>{{ booking.address|truncate(30) if booking.address else 'N/A' }}</td>
+                        <td>
+                            <span class="urgency-badge urgency-{{ booking.urgency|lower if booking.urgency else 'normal' }}">
+                                {{ booking.urgency if booking.urgency else 'Normal' }}
+                            </span>
+                        </td>
+                        <td><strong style="color: #22c55e;">₹{{ booking.payment_amount }}</strong></td>
+                        <td>
+                            <span class="status-badge status-{{ booking.status|replace(' ', '_')|lower if booking.status else 'pending' }}">
+                                {{ booking.status|title if booking.status else 'Pending' }}
+                            </span>
+                        </td>
+                        <td>{{ booking.created_at.strftime('%d-%m-%Y') if booking.created_at else 'N/A' }}</td>
+                        <td>
+                            <button class="action-btn" onclick="viewBookingDetails({{ booking.id }})">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="action-btn delete-btn" onclick="deleteBooking({{ booking.id }})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="13" style="text-align: center; padding: 40px;">
+                            <i class="fas fa-calendar-times" style="font-size: 48px; color: #38bdf8; margin-bottom: 20px; display: block;"></i>
+                            No bookings found
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if bookings.pages > 1 %}
+        <div class="pagination">
+            {% if bookings.has_prev %}
+                <a href="{{ url_for('admin_bookings', page=bookings.prev_num, status=status) }}" class="page-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            {% endif %}
+
+            {% for page_num in bookings.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                    {% if page_num == bookings.page %}
+                        <span class="page-btn active">{{ page_num }}</span>
+                    {% else %}
+                        <a href="{{ url_for('admin_bookings', page=page_num, status=status) }}" class="page-btn">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    <span class="page-btn">...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if bookings.has_next %}
+                <a href="{{ url_for('admin_bookings', page=bookings.next_num, status=status) }}" class="page-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" onclick="this.style.display='none'">
+        <img id="modalImage" src="">
+    </div>
+
+    <!-- Booking Details Modal -->
+    <div id="bookingDetailsModal" onclick="if(event.target === this) this.style.display='none'">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-check"></i> Booking Details</h2>
+                <span class="close-btn" onclick="document.getElementById('bookingDetailsModal').style.display='none'">✖</span>
+            </div>
+            <div id="modalBookingContent"></div>
+        </div>
+    </div>
+
+<script>
+// View booking details
+function viewBookingDetails(bookingId) {
+    console.log("Fetching details for booking:", bookingId);
+    
+    fetch('/get_booking_details/' + bookingId)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(booking => {
+        console.log("Booking data received:", booking);
+        
+        const content = document.getElementById('modalBookingContent');
+        
+        let urgencyClass = 'urgency-' + (booking.urgency || 'normal').toLowerCase();
+        let statusClass = 'status-' + (booking.status || 'pending').toLowerCase().replace(' ', '_');
+        
+        let html = `
+            <div class="detail-section">
+                <h4><i class="fas fa-user"></i> Customer Details</h4>
+                <p><strong>Name:</strong> ${booking.customer_name || 'N/A'}</p>
+                <p><strong>Phone:</strong> ${booking.customer_phone || 'N/A'}</p>
+                <p><strong>Email:</strong> ${booking.customer_email || 'N/A'}</p>
+            </div>
+
+            <div class="detail-section">
+                <h4><i class="fas fa-cog"></i> Service Details</h4>
+                <p><strong>Service:</strong> ${booking.service_name || 'N/A'}</p>
+                <p><strong>Title:</strong> ${booking.title || 'N/A'}</p>
+                <p><strong>Description:</strong> ${booking.description || 'N/A'}</p>
+            </div>
+            
+            <div class="detail-section">
+                <h4><i class="fas fa-map-marker-alt"></i> Location Details</h4>
+                <p><strong>Address:</strong> ${booking.address || 'N/A'}</p>
+                <p><strong>Room:</strong> ${booking.room || 'N/A'}</p>
+            </div>
+            
+            <div class="detail-section">
+                <h4><i class="fas fa-info-circle"></i> Status Information</h4>
+                <p><strong>Urgency:</strong> <span class="urgency-badge ${urgencyClass}">${booking.urgency || 'Normal'}</span></p>
+                <p><strong>Status:</strong> <span class="status-badge ${statusClass}">${booking.status || 'Pending'}</span></p>
+                <p><strong>Amount:</strong> ₹${booking.payment_amount || 0}</p>
+                <p><strong>Booked On:</strong> ${booking.created_at || 'N/A'}</p>
+            </div>
+        `;
+        
+        if (booking.image_filename && booking.image_filename != 'None') {
+            html += `
+                <div class="detail-section">
+                    <h4><i class="fas fa-image"></i> Problem Image</h4>
+                    <img src="/static/uploads/problems/${booking.image_filename}" 
+                         style="width: 100%; max-height: 300px; object-fit: contain; border-radius: 10px; border: 2px solid #38bdf8; cursor: pointer;"
+                         onclick="window.open(this.src, '_blank')"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22 viewBox=%220 0 300 200%22><rect width=%22300%22 height=%22200%22 fill=%22%23333%22/><text x=%2250%22 y=%22100%22 fill=%22%2394a3b8%22 font-size=%2220%22>Image not found</text></svg>'">
+                </div>
+            `;
+        }
+        
+        if (booking.technician_name) {
+            html += `
+                <div class="detail-section">
+                    <h4><i class="fas fa-tools"></i> Technician Details</h4>
+                    <p><strong>Name:</strong> ${booking.technician_name || 'Unassigned'}</p>
+                    <p><strong>Phone:</strong> ${booking.technician_phone || 'N/A'}</p>
+                </div>
+            `;
+        }
+        
+        content.innerHTML = html;
+        document.getElementById('bookingDetailsModal').style.display = 'flex';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error loading booking details: ' + error.message);
+    });
+}
+
+// Delete booking
+function deleteBooking(bookingId) {
+    if (confirm('Are you sure you want to delete booking #' + bookingId + '?')) {
+        fetch('/delete_booking/' + bookingId)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Booking deleted successfully');
+                location.reload();
+            } else {
+                alert('Error deleting booking: ' + (data.error || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            alert('Error: ' + error.message);
+        });
+    }
+}
+</script>
+</body>
+</html>

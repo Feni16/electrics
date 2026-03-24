@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | TechnoFIx AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#020617,#0a0f2c);
+    color:#e5e7eb;
+    display:flex;
+    flex-direction:column;
+}
+
+/* HEADER */
+header{
+    width:100%;
+    padding:20px 60px;
+    background:rgba(2,6,23,0.6);
+    backdrop-filter:blur(12px);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+header h1{
+    color:#7dd3fc;
+    font-size:1.8em;
+    font-weight:600;
+}
+header nav a{
+    color:#cbd5f5;
+    margin-left:25px;
+    text-decoration:none;
+    font-weight:500;
+}
+header nav a:hover{
+    color:#38bdf8;
+}
+
+/* MAIN */
+.main{
+    width:100%;
+    max-width:1100px;
+    margin:60px auto;
+    padding:40px;
+}
+
+/* TITLE */
+.main h2{
+    font-size:2.8em;
+    color:#7dd3fc;
+    margin-bottom:10px;
+    text-align:center;
+}
+.main p.subtitle{
+    text-align:center;
+    color:#cbd5f5;
+    margin-bottom:50px;
+    max-width:700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+/* GRID */
+.contact-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:45px;
+}
+
+/* INFO CARD */
+.info{
+    padding:40px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(16px);
+    box-shadow:0 0 35px rgba(125,211,252,0.18);
+}
+.info h3{
+    font-size:1.7em;
+    margin-bottom:20px;
+    color:#7dd3fc;
+}
+.info p{
+    margin-bottom:18px;
+    color:#cbd5f5;
+    line-height:1.7;
+}
+.info .highlight{
+    color:#e5e7eb;
+    font-weight:500;
+}
+.badges{
+    margin-top:25px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+}
+.badge{
+    padding:8px 16px;
+    border-radius:20px;
+    font-size:0.9em;
+    background:rgba(56,189,248,0.15);
+    color:#7dd3fc;
+    border:1px solid rgba(56,189,248,0.35);
+}
+
+/* FORM */
+form{
+    padding:40px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(16px);
+    box-shadow:0 0 35px rgba(56,189,248,0.25);
+}
+form h3{
+    font-size:1.7em;
+    margin-bottom:20px;
+    color:#7dd3fc;
+}
+input, textarea{
+    width:100%;
+    padding:14px;
+    margin-bottom:18px;
+    border-radius:15px;
+    border:1px solid rgba(125,211,252,0.25);
+    background:rgba(2,6,23,0.75);
+    color:white;
+    outline:none;
+}
+input::placeholder, textarea::placeholder{
+    color:#94a3b8;
+}
+input:focus, textarea:focus{
+    border-color:#38bdf8;
+    box-shadow:0 0 12px rgba(56,189,248,0.45);
+}
+textarea{
+    resize:none;
+    height:140px;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:30px;
+    background:#38bdf8;
+    color:#020617;
+    font-size:1.1em;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+button:hover{
+    background:#7dd3fc;
+    box-shadow:0 0 18px rgba(125,211,252,0.7);
+}
+
+/* FOOTER */
+footer{
+    margin-top:auto;
+    padding:20px;
+    text-align:center;
+    background:rgba(2,6,23,0.6);
+    backdrop-filter:blur(12px);
+    color:#cbd5f5;
+    font-size:0.9em;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .contact-grid{
+        grid-template-columns:1fr;
+    }
+    header{
+        padding:20px 30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>TechnoFIx AI</h1>
+    <nav>
+        <a href="{{ url_for('landing') }}">Home</a>
+        <a href="{{ url_for('service') }}">Services</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('login') }}">Login</a>
+    </nav>
+</header>
+
+<div class="main">
+    <h2>Contact TechnoFIx AI</h2>
+    <p class="subtitle">
+        TechnoFIx AI is a fully digital electric service platform.  
+        Connect with us anytime — our AI-powered support team is always online to help you.
+    </p>
+
+    <div class="contact-grid">
+
+        <!-- INFO -->
+        <div class="info">
+            <h3>🤝 How Can We Help?</h3>
+
+            <p>
+                <span class="highlight">TechnoFIx AI</span> provides smart electric service
+                management using artificial intelligence. We connect customers with
+                certified technicians quickly and securely.
+            </p>
+
+            <p>
+                📧 <span class="highlight">Email Support:</span><br>
+                support@technofix.com
+            </p>
+
+            <p>
+                📞 <span class="highlight">Customer Helpline:</span><br>
+                +91 98765 43210
+            </p>
+
+            <p>
+                ⏰ <span class="highlight">Availability:</span><br>
+                24×7 Online Support
+            </p>
+
+            <div class="badges">
+                <div class="badge">AI Powered</div>
+                <div class="badge">24/7 Support</div>
+                <div class="badge">Trusted Technicians</div>
+                <div class="badge">Fast Response</div>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <form method="POST">
+            <h3>✉ Send Us a Message</h3>
+            <input type="text" name="name" placeholder="Your Full Name" required>
+            <input type="email" name="email" placeholder="Your Email Address" required>
+            <textarea name="message" placeholder="Describe your query or issue..." required></textarea>
+            <button type="submit">Submit Request</button>
+        </form>
+
+    </div>
+</div>
+
+<footer>
+    © 2026 TechnoFIx AI · Digital Electric Service Platform
+</footer>
+
+</body>
+</html>

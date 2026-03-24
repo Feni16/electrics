@@ -1,0 +1,2740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Customers | TechnoFix AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            font-size: 14px;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 24px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid rgba(56, 189, 248, 0.15);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #38bdf8;
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 28px;
+            letter-spacing: -0.3px;
+        }
+
+        .profile-section {
+            text-align: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+            margin-bottom: 20px;
+        }
+
+        .profile-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #38bdf8, #0f172a);
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 600;
+            color: #fff;
+            border: 2.5px solid #38bdf8;
+            box-shadow: 0 8px 20px rgba(56,189,248,0.25);
+            overflow: hidden;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .profile-role {
+            color: #38bdf8;
+            font-size: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+
+        .sidebar-menu {
+            margin-top: 24px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            border-radius: 10px;
+            transition: all 0.2s;
+            cursor: pointer;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .menu-item:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            transform: translateX(4px);
+        }
+
+        .menu-item.active {
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .menu-item span:first-child {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            height: 100vh;
+            overflow-y: auto;
+            padding: 24px 28px;
+        }
+
+        .main::-webkit-scrollbar {
+            width: 6px;
+        }
+        .main::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .main::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 10px;
+        }
+
+        /* ===== TOPBAR ===== */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+        }
+
+        .welcome h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .date-badge {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .back-btn {
+            padding: 8px 18px;
+            background: #1e293b;
+            border: 1px solid rgba(56,189,248,0.2);
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #fff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .back-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+            border-color: #38bdf8;
+        }
+
+        .export-btn {
+            padding: 8px 18px;
+            background: #22c55e;
+            border: none;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #000;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .export-btn:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+
+        /* ===== NOTIFICATION ===== */
+        .notification-area {
+            position: relative;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 10px;
+            background: #1e293b;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 1px solid rgba(56,189,248,0.2);
+        }
+
+        .notification-bell:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: #fff;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 52px;
+            right: 0;
+            width: 320px;
+            background: #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            display: none;
+            z-index: 1000;
+            border: 1px solid #38bdf8;
+        }
+
+        .notification-dropdown.show {
+            display: block;
+        }
+
+        .notification-item {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+
+        .notification-item.unread {
+            background: rgba(56,189,248,0.1);
+            border-left: 3px solid #38bdf8;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* ===== CUSTOMER SECTION ===== */
+        .customers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .customers-header h2 {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .summary {
+            background: rgba(255,255,255,0.02);
+            padding: 18px 24px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(56,189,248,0.1);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .summary h3 {
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .summary .count {
+            font-size: 26px;
+            font-weight: 700;
+            color: #38bdf8;
+            line-height: 1.2;
+        }
+
+        .filter-buttons {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            background: #1e293b;
+            color: #cbd5e1;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .filter-btn.active {
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .filter-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.05);
+            background: #1e293b;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
+
+        /* ===== TABLE STYLES ===== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(56,189,248,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1500px;
+        }
+
+        th {
+            background: #1e293b;
+            color: #fff;
+            font-weight: 600;
+            font-size: 12px;
+            padding: 14px 12px;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            padding: 14px 12px;
+            font-size: 13px;
+            color: #cbd5e1;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: rgba(56,189,248,0.05);
+        }
+
+        .customer-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #38bdf8;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .customer-avatar:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 15px #38bdf8;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+            letter-spacing: 0.2px;
+        }
+
+        .status-pending {
+            background: #facc15;
+            color: #0f172a;
+        }
+
+        .status-in_progress {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .status-completed {
+            background: #22c55e;
+            color: #0f172a;
+        }
+
+        .status-active {
+            background: #22c55e;
+            color: #0f172a;
+        }
+
+        .status-inactive {
+            background: #64748b;
+            color: #fff;
+        }
+
+        .status-paid {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        .status-unpaid {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+            border: 1px solid #fbbf24;
+        }
+
+        /* Urgency Badges */
+        .urgency-badge {
+            padding: 3px 8px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .urgency-Normal {
+            background: #475569;
+            color: #fff;
+        }
+
+        .urgency-Urgent {
+            background: #f97316;
+            color: #000;
+        }
+
+        .urgency-Emergency {
+            background: #dc2626;
+            color: #fff;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .room-badge {
+            background: #2d3a4f;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 10px;
+            display: inline-block;
+        }
+
+        .problem-card {
+            background: #1e293b;
+            padding: 8px;
+            border-radius: 8px;
+            border-left: 3px solid #38bdf8;
+        }
+
+        .problem-card strong {
+            color: #38bdf8;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .view-btn {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .details-btn {
+            background: #facc15;
+            color: #000;
+        }
+
+        .payment-btn {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .payment-btn:hover {
+            background: #7c3aed;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            transition: 0.2s;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .call-btn {
+            background: #22c55e;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+        }
+
+        .sms-btn {
+            background: #38bdf8;
+        }
+
+        .chat-btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .chat-btn:hover {
+            background: #7c3aed;
+        }
+
+        .status-update-btn {
+            padding: 3px 6px;
+            border: none;
+            border-radius: 15px;
+            font-size: 9px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .status-update-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .status-update-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .action-icon {
+            font-size: 14px;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .action-icon:hover {
+            transform: scale(1.15);
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* No bookings badge */
+        .no-bookings-badge {
+            background: #475569;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            padding: 28px;
+            border-radius: 24px;
+            width: 900px;
+            max-width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid #38bdf8;
+            box-shadow: 0 25px 50px rgba(56,189,248,0.3);
+            animation: modalPop 0.3s ease;
+        }
+
+        .payment-modal {
+            width: 500px;
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-section {
+            margin: 16px 0;
+            padding: 16px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            border-left: 4px solid #38bdf8;
+        }
+
+        .modal-section h4 {
+            color: #38bdf8;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-section p {
+            font-size: 14px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-section b {
+            color: #94a3b8;
+            min-width: 100px;
+            display: inline-block;
+        }
+
+        .close {
+            float: right;
+            font-size: 28px;
+            color: #ef4444;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(239,68,68,0.1);
+        }
+
+        .close:hover {
+            background: #ef4444;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        /* ===== CHAT MODAL STYLES ===== */
+        .chat-modal-content {
+            width: 600px;
+            max-width: 95%;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #2d3a4f;
+            padding: 18px 24px;
+            border-bottom: 2px solid #38bdf8;
+            border-radius: 24px 24px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            color: #38bdf8;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tech-info-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(56,189,248,0.1);
+            border-left: 4px solid #38bdf8;
+            margin: 10px;
+            border-radius: 8px;
+        }
+
+        .tech-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #000;
+            overflow: hidden;
+            border: 2px solid #38bdf8;
+        }
+
+        .tech-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            animation: messagePop 0.3s ease;
+        }
+
+        .my-message {
+            align-self: flex-end;
+            background: #38bdf8;
+            color: #000;
+            border-bottom-right-radius: 4px;
+        }
+
+        .their-message {
+            align-self: flex-start;
+            background: #334155;
+            color: #fff;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-sender {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            background: #1e293b;
+            border-top: 1px solid rgba(56,189,248,0.2);
+            border-radius: 0 0 24px 24px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            background: #2d3a4f;
+            border: 1px solid rgba(56,189,248,0.3);
+            border-radius: 30px;
+            color: #fff;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: #38bdf8;
+        }
+
+        .send-btn {
+            background: #38bdf8;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #38bdf8;
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #38bdf8;
+            color: #0f172a;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 4000;
+            box-shadow: 0 10px 20px rgba(56,189,248,0.3);
+        }
+
+        .toast.error {
+            background: #ef4444;
+            color: white;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+
+        /* Problem Image Styles */
+        .problem-image-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #38bdf8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .problem-image-thumb:hover {
+            transform: scale(2.5);
+            box-shadow: 0 0 20px #38bdf8;
+            z-index: 100;
+            position: relative;
+        }
+
+        .problem-image-placeholder {
+            width: 50px;
+            height: 50px;
+            background: #1e293b;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #475569;
+        }
+
+        .problem-image-placeholder i {
+            color: #475569;
+            font-size: 18px;
+        }
+
+        .problem-details {
+            flex: 1;
+        }
+
+        .problem-image-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .loading-spinner i {
+            font-size: 48px;
+            color: #38bdf8;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Payment Amount Small */
+        .payment-amount-small {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+@media screen and (max-width: 1200px) {
+    .sidebar {
+        width: 220px;
+    }
+    .main {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .sidebar {
+        width: 80px;
+        padding: 20px 10px;
+    }
+    .sidebar h2 span:last-child,
+    .profile-name,
+    .profile-role,
+    .menu-item span:last-child {
+        display: none;
+    }
+    .sidebar h2 {
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+    .menu-item {
+        justify-content: center;
+        padding: 12px;
+    }
+    .menu-item span:first-child {
+        font-size: 24px;
+        margin: 0;
+    }
+    .main {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+    .summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+    }
+    .sidebar {
+        transform: translateX(-100%);
+        transition: 0.3s;
+        z-index: 1001;
+    }
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+        display: block !important;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1002;
+        background: #38bdf8;
+        color: #000;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        border: 2px solid #38bdf8;
+        box-shadow: 0 4px 10px rgba(56,189,248,0.3);
+    }
+    
+    .topbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+        margin-top: 50px;
+    }
+    
+    .action-buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .welcome h1 {
+        font-size: 18px;
+        text-align: center;
+    }
+    
+    .filter-buttons {
+        justify-content: center;
+    }
+    
+    .filter-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .summary {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .summary .count {
+        font-size: 22px;
+    }
+    
+    /* Table Responsive */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        min-width: 1000px;
+    }
+    
+    /* Card View for Mobile */
+    .mobile-card-view {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .filter-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+        width: calc(50% - 5px);
+        text-align: center;
+    }
+    
+    .search-box input {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+    
+    .export-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .back-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .notification-bell {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .payment-modal {
+        width: 95%;
+    }
+    
+    .modal-section h4 {
+        font-size: 14px;
+    }
+    
+    .modal-section p {
+        font-size: 12px;
+    }
+}
+
+/* Mobile Menu Button - Hidden by default */
+.mobile-menu-btn {
+    display: none;
+}
+
+/* Overlay for mobile menu */
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.menu-overlay.active {
+    display: block;
+}
+
+/* Print styles */
+@media print {
+    .sidebar,
+    .topbar .action-buttons,
+    .filter-buttons,
+    .search-box,
+    .export-btn,
+    .back-btn,
+    .notification-area,
+    .pagination,
+    .status-update-btn,
+    .contact-btn,
+    .chat-btn,
+    .action-btn {
+        display: none !important;
+    }
+    
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 0;
+    }
+    
+    table {
+        min-width: 100%;
+    }
+    
+    th {
+        background: #f0f0f0;
+        color: #000;
+    }
+    
+    td {
+        color: #000;
+    }
+}
+
+/* Table styles update - line ~250 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1200px; /* Reduced from 1500px */
+}
+
+/* For very small screens */
+@media screen and (max-width: 480px) {
+    table {
+        min-width: 1000px;
+    }
+    
+    th, td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+    
+    .customer-avatar {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .problem-image-thumb {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .action-btn {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    
+    .contact-btn {
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+    
+    .status-update-btn {
+        padding: 2px 4px;
+        font-size: 8px;
+    }
+}
+/* Update summary styles - line ~160 */
+.summary {
+    background: rgba(255,255,255,0.02);
+    padding: 18px 24px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(56,189,248,0.1);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+/* Update filter buttons - line ~180 */
+.filter-buttons {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    background: #1e293b;
+    color: #cbd5e1;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 576px) {
+    .filter-btn {
+        white-space: normal;
+        flex: 1 1 auto;
+    }
+}
+
+/* Update modal styles - line ~500 */
+.modal-content {
+    background: #1e293b;
+    padding: 28px;
+    border-radius: 24px;
+    width: 900px;
+    max-width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 2px solid #38bdf8;
+    box-shadow: 0 25px 50px rgba(56,189,248,0.3);
+    animation: modalPop 0.3s ease;
+}
+
+@media screen and (max-width: 768px) {
+    .modal-content {
+        padding: 20px;
+        width: 95%;
+    }
+    
+    .modal-content .flex {
+        flex-direction: column;
+    }
+    
+    .modal-content [style*="flex:1"] {
+        width: 100%;
+    }
+}
+
+.payment-modal {
+    width: 500px;
+}
+
+@media screen and (max-width: 576px) {
+    .payment-modal {
+        width: 95%;
+    }
+}
+
+/* Update chat modal - line ~550 */
+.chat-modal-content {
+    width: 600px;
+    max-width: 95%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 576px) {
+    .chat-modal-content {
+        height: 90vh;
+        width: 100%;
+        border-radius: 0;
+    }
+    
+    .chat-header {
+        padding: 15px;
+    }
+    
+    .chat-header h3 {
+        font-size: 16px;
+    }
+    
+    .chat-messages {
+        padding: 15px;
+    }
+    
+    .chat-input-area {
+        padding: 15px;
+    }
+    
+    .chat-input {
+        padding: 10px 15px;
+    }
+    
+    .send-btn {
+        padding: 10px 15px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal" onclick="if(event.target===this) closeImageModal()">
+        <div style="position:relative; max-width:90%; max-height:90%;">
+            <span onclick="closeImageModal()" style="position:absolute; top:-40px; right:0; color:#ef4444; font-size:36px; cursor:pointer;">&times;</span>
+            <img id="fullSizeImage" style="max-width:100%; max-height:90vh; border:3px solid #38bdf8; border-radius:16px;">
+        </div>
+    </div>
+
+    <!-- PAYMENT DETAILS MODAL -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content payment-modal">
+            <span class="close" onclick="closePaymentModal()">✖</span>
+            <h3 style="color:#38bdf8; text-align:center; margin-bottom:20px;">
+                <i class="fas fa-credit-card"></i> Payment Details
+            </h3>
+            <div id="paymentDetailsContent"></div>
+        </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2><span>⚡</span><span>TechnoFix AI</span></h2>
+        
+        <div class="profile-section">
+            <div class="profile-image">
+                {% if technician and technician.profile_image and technician.profile_image != 'None' %}
+                    <img src="{{ url_for('static', filename='uploads/' + technician.profile_image) }}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                {% elif technician and technician.username %}
+                    {{ technician.username[0:2]|upper }}
+                {% else %}
+                    TE
+                {% endif %}
+            </div>
+            <div class="profile-name">{{ technician.username if technician and technician.username else 'Technician' }}</div>
+            <div class="profile-role">
+                {% if technician and technician.specialization %}
+                    {{ technician.specialization }}
+                {% else %}
+                    Senior Technician
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="{{ url_for('technician_dashboard') }}" class="menu-item {% if request.endpoint == 'technician_dashboard' %}active{% endif %}">
+                <span>📊</span><span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('technician_customers') }}" class="menu-item active">
+                <span>👥</span><span>My Customers</span>
+            </a>
+            <a href="{{ url_for('technician_help') }}" class="menu-item {% if request.endpoint == 'technician_help' %}active{% endif %}">
+                <span>❓</span><span>Help & Support</span>
+            </a>
+            <a href="{{ url_for('technician_profile') }}" class="menu-item">
+                <span>👤</span><span>My Profile</span>
+            </a>
+            <a href="{{ url_for('logout') }}" class="menu-item" style="margin-top: 30px;">
+                <span>🚪</span><span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+<div class="mobile-menu-btn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</div>
+
+<!-- Menu Overlay -->
+<div class="menu-overlay" onclick="toggleSidebar()"></div>
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="welcome">
+                <h1>Welcome back, {{ technician.username if technician and technician.username else 'Technician' }}! 👋</h1>
+                <div class="date-badge">{{ now.strftime('%A, %d %B %Y') if now else '' }}</div>
+            </div>
+            <div class="action-buttons">
+                <button class="export-btn" onclick="exportToCSV()">
+                    <i class="fas fa-download"></i> Export CSV
+                </button>
+                <div class="notification-area">
+                    <div class="notification-bell" id="notificationBell">
+                        <span>🔔</span>
+                        <span class="notification-badge" id="notificationBadge">{{ unread_notifications if unread_notifications else 0 }}</span>
+                    </div>
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-list" id="notificationList">
+                            {% if notifications and notifications|length > 0 %}
+                                {% for notification in notifications %}
+                                <div class="notification-item {% if not notification.is_read %}unread{% endif %}" onclick="markAsRead({{ notification.id }})">
+                                    <div class="notification-message">{{ notification.message }}</div>
+                                    <div class="notification-time">{{ notification.created_at }}</div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="notification-item">No notifications</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <a href="{{ url_for('technician_dashboard') }}" class="back-btn">🔙 Back</a>
+            </div>
+        </div>
+
+        <!-- HEADER -->
+        <div class="customers-header">
+            <h2>👥 All Customers & Their Bookings</h2>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="summary" id="summaryBox">
+            <div>
+                <h3>Total Customers</h3>
+                <div class="count" id="totalCustomers">{{ customers|length }}</div>
+            </div>
+            <div>
+                <h3>With Bookings</h3>
+                <div class="count" style="color:#38bdf8;" id="withBookingsCount">{{ bookings|length }}</div>
+            </div>
+            <div>
+                <h3>Completed</h3>
+                <div class="count" style="color:#22c55e;" id="completedCount">{{ completed_count }}</div>
+            </div>
+            <div>
+                <h3>Pending</h3>
+                <div class="count" style="color:#facc15;" id="pendingCount">{{ pending_count }}</div>
+            </div>
+            <div>
+                <h3>In Progress</h3>
+                <div class="count" style="color:#38bdf8;" id="inProgressCount">{{ in_progress_count }}</div>
+            </div>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterByStatus('all', this)">📋 All ({{ total_bookings }})</button>
+            <button class="filter-btn" onclick="filterByStatus('pending', this)">⏳ Pending ({{ pending_count }})</button>
+            <button class="filter-btn" onclick="filterByStatus('in_progress', this)">⚡ In Progress ({{ in_progress_count }})</button>
+            <button class="filter-btn" onclick="filterByStatus('completed', this)">✅ Completed ({{ completed_count }})</button>
+            <button class="filter-btn" onclick="filterByStatus('no_bookings', this)">🚫 No Bookings ({{ customers_without_bookings }})</button>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search by name, phone, email, location, problem, ID..." onkeyup="filterCustomers()">
+        </div>
+
+        <!-- MAIN TABLE - ALL CUSTOMERS IN ONE TABLE -->
+        <div class="table-container">
+            <table id="customerTable">
+                <thead>
+                    <tr>
+                        <th>PHOTO</th>
+                        <th>ID</th>
+                        <th>CUSTOMER</th>
+                        <th>PHONE</th>
+                        <th>EMAIL</th>
+                        <th>LOCATION</th>
+                        <th>PROBLEM</th>
+                        <th>STATUS</th>
+                        <th>PAYMENT</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if customers and customers|length > 0 %}
+                        {% for customer in customers %}
+                            {% set customer_bookings = bookings|selectattr('customer_id', 'equalto', customer.id)|list %}
+                            
+                            {% if customer_bookings and customer_bookings|length > 0 %}
+                                {% for booking in customer_bookings %}
+                                {% set payment = payments|selectattr('request_id', 'equalto', booking.id)|first %}
+                                <tr class="booking-row" 
+                                    data-status="{{ booking.status }}" 
+                                    data-booking-id="{{ booking.id }}"
+                                    data-customer-id="{{ customer.id }}"
+                                    data-customer-name="{{ customer.username }}"
+                                    data-customer-phone="{{ customer.phone|default('', true) }}"
+                                    data-customer-email="{{ customer.email|default('', true) }}">
+                                    
+                                    <!-- PHOTO -->
+                                    <td>
+                                        {% set profile_image = customer.profile_image if customer.profile_image and customer.profile_image != 'None' else 'default.png' %}
+                                        <img src="{{ url_for('static', filename='uploads/' + profile_image) }}" 
+                                             class="customer-avatar" 
+                                             onclick="openImageModal(this.src)"
+                                             title="Click to enlarge">
+                                    </td>
+                                    
+                                    <!-- ID -->
+                                    <td><strong>#{{ customer.id }}</strong></td>
+                                    
+                                    <!-- CUSTOMER -->
+                                    <td>
+                                        <div style="display:flex; flex-direction:column;">
+                                            <strong style="color:#fff;">{{ customer.username }}</strong>
+                                            <small style="color:#94a3b8;">ID: {{ customer.id }}</small>
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- PHONE with icons -->
+                                    <td>
+                                        <div style="display:flex; flex-direction:column; gap:3px;">
+                                            <span style="font-weight:500;">{{ customer.phone|default('N/A', true) }}</span>
+                                            {% if customer.phone and customer.phone != 'N/A' and customer.phone != '' %}
+                                            <div style="display:flex; gap:3px;">
+                                                <a href="tel:{{ customer.phone }}" class="action-icon" title="Call" style="color:#22c55e;">
+                                                    <i class="fas fa-phone"></i>
+                                                </a>
+                                                <a href="https://wa.me/{{ customer.phone|replace('+', '')|replace(' ', '') }}" 
+                                                   target="_blank" class="action-icon" title="WhatsApp" style="color:#25D366;">
+                                                    <i class="fab fa-whatsapp"></i>
+                                                </a>
+                                                <a href="sms:{{ customer.phone }}" class="action-icon" title="SMS" style="color:#38bdf8;">
+                                                    <i class="fas fa-comment"></i>
+                                                </a>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- EMAIL -->
+                                    <td>
+                                        <div style="display:flex; flex-direction:column;">
+                                            <span>{{ customer.email|default('N/A', true) }}</span>
+                                            {% if customer.email and customer.email != 'N/A' %}
+                                            <a href="mailto:{{ customer.email }}" style="color:#38bdf8; font-size:11px; text-decoration:none;">
+                                                <i class="fas fa-envelope"></i> Send Mail
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- LOCATION -->
+                                    <td>{{ customer.location|default('N/A', true) }}</td>
+                                    
+                                    <!-- PROBLEM WITH IMAGE -->
+                                    <td>
+                                        <div class="problem-image-container">
+                                            {% if booking.image_filename and booking.image_filename != '' and booking.image_filename != 'None' %}
+                                            <div>
+                                                <img src="{{ url_for('static', filename='uploads/problems/' + booking.image_filename) }}" 
+                                                     class="problem-image-thumb"
+                                                     onclick="openImageModal(this.src)"
+                                                     title="Click to enlarge - {{ booking.title }}">
+                                            </div>
+                                            {% else %}
+                                            <div class="problem-image-placeholder">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                            {% endif %}
+                                            
+                                            <div class="problem-details">
+                                                <strong style="color:#38bdf8;">{{ booking.title }}</strong>
+                                                <div style="display:flex; gap:5px; margin-top:4px; flex-wrap:wrap;">
+                                                    <span class="room-badge">🚪 {{ booking.room|default('N/A', true) }}</span>
+                                                    <span class="urgency-badge urgency-{{ booking.urgency|default('Normal', true) }}">
+                                                        ⚡ {{ booking.urgency|default('Normal', true) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- STATUS -->
+                                    <td>
+                                        <span class="status-badge status-{{ booking.status }}">
+                                            {{ booking.status|replace('_', ' ') }}
+                                        </span>
+                                    </td>
+                                    
+                                    <!-- PAYMENT -->
+                                    <td>
+                                        {% if payment %}
+                                            <span class="status-badge status-paid">
+                                                <i class="fas fa-check-circle"></i> Paid
+                                            </span>
+                                            <div class="payment-amount-small">
+                                                ₹{{ payment.amount }} • {{ payment.method }}
+                                            </div>
+                                        {% else %}
+                                            <span class="status-badge status-unpaid">
+                                                <i class="fas fa-clock"></i> Unpaid
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    
+                                    <!-- ACTIONS -->
+                                    <td>
+                                        <div style="display:flex; flex-direction:column; gap:8px;">
+                                            <!-- Row 1: View Buttons -->
+                                            <div style="display:flex; gap:4px; justify-content:center;">
+                                                <!-- FULL DETAILS BUTTON -->
+                                                <button onclick='openCustomerWithBooking({{ customer.id }}, {{ booking.id }})' 
+                                                        class="action-btn" 
+                                                        style="background: linear-gradient(90deg, #8b5cf6, #38bdf8); color: white; padding: 8px 15px; font-weight:600;">
+                                                    <i class="fas fa-id-card"></i> Full Details
+                                                </button>
+                                                
+                                                <!-- Customer Only Button -->
+                                                <button onclick='openCustomerModal(
+                                                    "{{ customer.id }}", 
+                                                    "{{ customer.username|replace('"', '&quot;') }}", 
+                                                    "{{ customer.phone|default('', true) }}",
+                                                    "{{ customer.email|default('', true)|replace('"', '&quot;') }}", 
+                                                    "{{ customer.location|default('', true)|replace('"', '&quot;') }}",
+                                                    "{{ customer.profile_image|default('', true) }}", 
+                                                    "{{ customer.created_at|default('', true) }}",
+                                                    "{{ customer.status|default('Active', true) }}"
+                                                )' class="action-btn view-btn" title="View Only Customer">
+                                                    <i class="fas fa-user"></i>
+                                                </button>
+                                                
+                                                <!-- Booking Only Button -->
+                                                <button onclick='showBookingDetails({{ booking.id }})' 
+                                                        class="action-btn details-btn" title="View Only Booking">
+                                                    <i class="fas fa-wrench"></i>
+                                                </button>
+                                            </div>
+                                            
+                                            <!-- Row 2: Contact Options -->
+                                            <div style="display:flex; gap:4px; justify-content:center; flex-wrap:wrap;">
+                                                {% if customer.phone and customer.phone != 'N/A' %}
+                                                <a href="tel:{{ customer.phone }}" class="contact-btn call-btn">
+                                                    <i class="fas fa-phone"></i> Call
+                                                </a>
+                                                
+                                                <a href="https://wa.me/{{ customer.phone|replace('+', '')|replace(' ', '') }}?text=Hello%20{{ customer.username }}%2C%20I%27m%20your%20technician%20regarding%20booking%20%23{{ booking.id }}" 
+                                                   target="_blank" class="contact-btn whatsapp-btn">
+                                                    <i class="fab fa-whatsapp"></i> WhatsApp
+                                                </a>
+                                                {% endif %}
+                                                
+                                                <button onclick='openChatModal(
+                                                    {{ booking.id }},
+                                                    {{ customer.id }},
+                                                    "{{ customer.username|replace('"', '&quot;') }}",
+                                                    "{{ customer.profile_image|default('') }}",
+                                                    "{{ booking.title|replace('"', '&quot;') }}"
+                                                )' class="contact-btn chat-btn">
+                                                    <i class="fas fa-comment-dots"></i> Chat
+                                                </button>
+                                            </div>
+                                            
+                                            <!-- Row 3: Status Update & Payment -->
+                                            <div style="display:flex; gap:3px; justify-content:center; margin-top:5px; flex-wrap:wrap;">
+                                                <button class="status-update-btn" 
+                                                        onclick="updateBookingStatus({{ booking.id }}, 'pending', this)" 
+                                                        {% if booking.status == 'pending' %}disabled{% endif %}
+                                                        style="background:#facc15; color:#000;">
+                                                    Pending
+                                                </button>
+                                                <button class="status-update-btn" 
+                                                        onclick="updateBookingStatus({{ booking.id }}, 'in_progress', this)" 
+                                                        {% if booking.status == 'in_progress' %}disabled{% endif %}
+                                                        style="background:#38bdf8; color:#000;">
+                                                    In Prog
+                                                </button>
+                                                <button class="status-update-btn" 
+                                                        onclick="updateBookingStatus({{ booking.id }}, 'completed', this)" 
+                                                        {% if booking.status == 'completed' %}disabled{% endif %}
+                                                        style="background:#22c55e; color:#000;">
+                                                    Done
+                                                </button>
+                                                
+                                                {% if payment %}
+                                                <button onclick='viewPaymentDetails({{ payment.id }})' 
+                                                        class="action-btn payment-btn">
+                                                    <i class="fas fa-credit-card"></i> Payment
+                                                </button>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <!-- Customer with NO bookings -->
+                                <tr data-customer-id="{{ customer.id }}"
+                                    data-customer-name="{{ customer.username }}"
+                                    data-customer-phone="{{ customer.phone|default('', true) }}"
+                                    data-customer-email="{{ customer.email|default('', true) }}">
+                                    
+                                    <td>
+                                        {% set profile_image = customer.profile_image if customer.profile_image and customer.profile_image != 'None' else 'default.png' %}
+                                        <img src="{{ url_for('static', filename='uploads/' + profile_image) }}" 
+                                             class="customer-avatar" 
+                                             onclick="openImageModal(this.src)">
+                                    </td>
+                                    <td>#{{ customer.id }}</td>
+                                    <td><strong style="color:#fff;">{{ customer.username }}</strong></td>
+                                    <td>{{ customer.phone|default('N/A', true) }}</td>
+                                    <td>{{ customer.email|default('N/A', true) }}</td>
+                                    <td>{{ customer.location|default('N/A', true) }}</td>
+                                    <td>
+                                        <span class="no-bookings-badge">No active bookings</span>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge status-{{ customer.status|lower|default('active') }}">
+                                            {{ customer.status|default('Active') }}
+                                        </span>
+                                    </td>
+                                    <td>-</td>
+                                    <td>
+                                        <div style="display:flex; gap:4px; justify-content:center;">
+                                            <button onclick='openCustomerModal(
+                                                "{{ customer.id }}", 
+                                                "{{ customer.username|replace('"', '&quot;') }}", 
+                                                "{{ customer.phone|default('', true) }}",
+                                                "{{ customer.email|default('', true)|replace('"', '&quot;') }}", 
+                                                "{{ customer.location|default('', true)|replace('"', '&quot;') }}",
+                                                "{{ customer.profile_image|default('', true) }}", 
+                                                "{{ customer.created_at|default('', true) }}",
+                                                "{{ customer.status|default('Active', true) }}"
+                                            )' class="action-btn view-btn">
+                                                <i class="fas fa-eye"></i> View
+                                            </button>
+                                            
+                                            {% if customer.phone and customer.phone != 'N/A' %}
+                                            <a href="tel:{{ customer.phone }}" class="action-icon" style="color:#22c55e;">
+                                                <i class="fas fa-phone"></i>
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="10" class="no-data">No customers found in database</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination will be inserted here by JavaScript -->
+    </div>
+
+    <!-- CUSTOMER DETAILS MODAL -->
+    <div class="modal" id="customerModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">✖</span>
+            <h3 style="color:#38bdf8; text-align:center; margin-bottom:20px;">📋 Customer & Booking Details</h3>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- CHAT MODAL -->
+    <div class="modal" id="chatModal" onclick="if(event.target === this) closeChatModal()">
+        <div class="modal-content chat-modal-content">
+            <div class="chat-header">
+                <h3><i class="fas fa-comment-dots"></i> Chat with Customer</h3>
+                <span class="close" onclick="closeChatModal()">✖</span>
+            </div>
+            
+            <div class="tech-info-header" id="chatCustomerInfo">
+                <div class="tech-avatar" id="chatAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div>
+                    <h4 id="chatCustomerNameHeader" style="color:#38bdf8;">Loading...</h4>
+                    <p id="chatBookingInfo" style="font-size:12px; color:#94a3b8;">Booking #...</p>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div style="text-align: center; color: #94a3b8; padding: 30px;">
+                    <i class="fas fa-comments" style="font-size: 48px; color: #38bdf8;"></i>
+                    <p>Start conversation with customer</p>
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <input type="text" id="chatMessageInput" class="chat-input" placeholder="Type your message..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
+                <button onclick="sendChatMessage()" class="send-btn" id="sendChatBtn">
+                    <i class="fas fa-paper-plane"></i> Send
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast" style="display: none;">Message</div>
+
+    <script>
+        // ========== GLOBAL VARIABLES ==========
+        let currentFilter = 'all';
+        let currentChatBooking = null;
+        let currentChatCustomer = null;
+        let currentChatCustomerId = null;
+        let chatRefreshInterval = null;
+        let currentPage = 1;
+        const rowsPerPage = 10;
+
+        // ========== NOTIFICATION FUNCTIONS ==========
+        function markAsRead(notificationId) {
+            fetch('/mark_notification_read/' + notificationId, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const badge = document.getElementById('notificationBadge');
+                    if (badge) {
+                        let count = parseInt(badge.textContent) || 0;
+                        badge.textContent = count > 0 ? count - 1 : 0;
+                    }
+                    showToast('✅ Notification marked as read');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('❌ Error', 'error');
+            });
+        }
+
+        // ========== UPDATE BOOKING STATUS ==========
+        function updateBookingStatus(bookingId, newStatus, btnElement) {
+            if (!confirm(`Change status to ${newStatus.replace('_', ' ')}?`)) return;
+            
+            fetch('/technician/update_status_ajax', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ booking_id: bookingId, status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const targetRow = document.querySelector(`[data-booking-id="${bookingId}"]`);
+                    if (targetRow) {
+                        targetRow.dataset.status = newStatus;
+                        const badgeSpan = targetRow.querySelector('.status-badge:not(.status-paid):not(.status-unpaid)');
+                        if (badgeSpan) {
+                            badgeSpan.className = 'status-badge status-' + newStatus;
+                            badgeSpan.innerText = newStatus.replace('_', ' ');
+                        }
+                        
+                        const btns = targetRow.querySelectorAll('.status-update-btn');
+                        btns.forEach(btn => {
+                            btn.disabled = false;
+                            if (btn.textContent.toLowerCase().includes(newStatus.replace('_', ' ')) || 
+                                (newStatus === 'in_progress' && btn.textContent.includes('Prog')) ||
+                                (newStatus === 'completed' && btn.textContent.includes('Done'))) {
+                                btn.disabled = true;
+                            }
+                        });
+                    }
+                    
+                    let saved = JSON.parse(localStorage.getItem('bookingStatuses') || '{}');
+                    saved[bookingId] = newStatus;
+                    localStorage.setItem('bookingStatuses', JSON.stringify(saved));
+                    
+                    refreshSummaryFromRows();
+                    showToast(`✅ Status updated to ${newStatus.replace('_', ' ')}`);
+                    closeModal();
+                } else {
+                    showToast('❌ Error: ' + (data.error || 'Unknown'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('❌ Error updating status', 'error');
+            });
+        }
+
+        // ========== VIEW PAYMENT DETAILS ==========
+        function viewPaymentDetails(paymentId) {
+            fetch(`/get_payment_details_tech/${paymentId}`)
+                .then(response => response.json())
+                .then(payment => {
+                    let modal = document.getElementById('paymentModal');
+                    let content = document.getElementById('paymentDetailsContent');
+                    
+                    let statusClass = 'status-' + payment.status.toLowerCase();
+                    let methodClass = 'method-' + payment.method.toLowerCase();
+                    
+                    let html = `
+                        <div class="modal-section">
+                            <h4><i class="fas fa-receipt"></i> Payment Information</h4>
+                            <p><i class="fas fa-hashtag" style="color:#38bdf8;"></i> <b>Payment ID:</b> #${payment.id}</p>
+                            <p><i class="fas fa-calendar-check" style="color:#22c55e;"></i> <b>Booking ID:</b> #${payment.request_id}</p>
+                            <p><i class="fas fa-tag" style="color:#f97316;"></i> <b>Amount:</b> ₹${payment.amount}</p>
+                            <p><i class="fas fa-credit-card" style="color:#8b5cf6;"></i> <b>Method:</b> 
+                                <span class="status-badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8;">${payment.method}</span>
+                            </p>
+                            <p><i class="fas fa-circle" style="color:#38bdf8;"></i> <b>Status:</b> 
+                                <span class="status-badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981;">${payment.status}</span>
+                            </p>
+                            <p><i class="fas fa-clock" style="color:#94a3b8;"></i> <b>Paid On:</b> ${payment.paid_at}</p>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h4><i class="fas fa-tools"></i> Service Details</h4>
+                            <p><b>Service:</b> ${payment.service_name}</p>
+                            <p><b>Title:</b> ${payment.booking_title}</p>
+                            <p><b>Customer:</b> ${payment.customer_name}</p>
+                        </div>
+                        
+                        <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
+                            <button class="action-btn view-btn" onclick="closePaymentModal()">
+                                <i class="fas fa-check"></i> Close
+                            </button>
+                        </div>
+                    `;
+                    
+                    content.innerHTML = html;
+                    modal.style.display = 'flex';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Error loading payment details', 'error');
+                });
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        // ========== OPEN CUSTOMER MODAL (Customer Only) ==========
+        function openCustomerModal(id, name, phone, email, location, image, created, status) {
+            let modal = document.getElementById('customerModal');
+            let content = document.getElementById('modalContent');
+            
+            let profileImg = image && image != 'None' ? `/static/uploads/${image}` : '/static/uploads/default.png';
+            
+            let html = `
+                <div style="text-align:center;">
+                    <img src="${profileImg}" style="width:120px; height:120px; border-radius:50%; border:3px solid #38bdf8; margin-bottom:15px; object-fit:cover;">
+                    <h3 style="color:#38bdf8;">${name}</h3>
+                </div>
+                <div class="modal-section">
+                    <h4><i class="fas fa-id-card"></i> Customer Information</h4>
+                    <p><i class="fas fa-hashtag" style="color:#38bdf8; width:25px;"></i> <b>ID:</b> #${id}</p>
+                    <p><i class="fas fa-phone" style="color:#22c55e; width:25px;"></i> <b>Phone:</b> ${phone || 'N/A'}</p>
+                    <p><i class="fas fa-envelope" style="color:#facc15; width:25px;"></i> <b>Email:</b> ${email || 'N/A'}</p>
+                    <p><i class="fas fa-map-marker-alt" style="color:#ef4444; width:25px;"></i> <b>Location:</b> ${location || 'N/A'}</p>
+                    <p><i class="fas fa-calendar" style="color:#8b5cf6; width:25px;"></i> <b>Member Since:</b> ${created ? new Date(created).toLocaleDateString() : 'N/A'}</p>
+                    <p><i class="fas fa-circle" style="color:${status === 'Active' ? '#22c55e' : '#ef4444'}; width:25px;"></i> <b>Status:</b> <span class="status-badge status-${(status || 'Active').toLowerCase()}">${status || 'Active'}</span></p>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
+                    ${phone && phone != 'N/A' ? `
+                        <a href="tel:${phone}" class="contact-btn call-btn" style="padding:10px 20px;">
+                            <i class="fas fa-phone"></i> Call
+                        </a>
+                        <a href="https://wa.me/${phone.replace('+','').replace(/ /g,'')}" target="_blank" class="contact-btn whatsapp-btn" style="padding:10px 20px;">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                    ` : ''}
+                </div>
+            `;
+            
+            content.innerHTML = html;
+            modal.style.display = 'flex';
+        }
+
+        // ========== SHOW BOOKING DETAILS (Booking Only) ==========
+        function showBookingDetails(bookingId) {
+            fetch(`/get_booking_details/${bookingId}`)
+                .then(response => response.json())
+                .then(data => {
+                    let modal = document.getElementById('customerModal');
+                    let content = document.getElementById('modalContent');
+                    
+                    let imageHtml = '';
+                    if (data.image_filename && data.image_filename != '' && data.image_filename != 'None') {
+                        imageHtml = `
+                        <div class="modal-section" style="text-align:center;">
+                            <h4><i class="fas fa-camera"></i> Problem Image</h4>
+                            <img src="/static/uploads/problems/${data.image_filename}" 
+                                 style="max-width:100%; max-height:300px; border-radius:12px; border:3px solid #38bdf8; cursor:pointer;" 
+                                 onclick="window.open(this.src, '_blank')">
+                        </div>`;
+                    }
+                    
+                    let html = `
+                        <h3 style="color:#38bdf8; text-align:center;">🔧 Booking #${data.id}</h3>
+                        
+                        <div class="modal-section">
+                            <h4><i class="fas fa-tools"></i> Service Details</h4>
+                            <p><b>Service:</b> ${data.service_name || 'N/A'}</p>
+                            <p><b>Title:</b> ${data.title || 'N/A'}</p>
+                            <p><b>Description:</b> ${data.description || 'N/A'}</p>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h4><i class="fas fa-map-marker-alt"></i> Location Details</h4>
+                            <p><b>Address:</b> ${data.address || 'N/A'}</p>
+                            <p><b>Room:</b> ${data.room || 'N/A'}</p>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h4><i class="fas fa-info-circle"></i> Status Info</h4>
+                            <p><b>Urgency:</b> <span class="urgency-badge urgency-${data.urgency || 'Normal'}">${data.urgency || 'Normal'}</span></p>
+                            <p><b>Status:</b> <span class="status-badge status-${data.status || 'pending'}">${data.status || 'pending'}</span></p>
+                            <p><b>Amount:</b> ₹${data.payment_amount || 0}</p>
+                            <p><b>Booked On:</b> ${data.created_at || 'N/A'}</p>
+                        </div>
+                        
+                        ${imageHtml}
+                    `;
+                    
+                    content.innerHTML = html;
+                    modal.style.display = 'flex';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Error loading details', 'error');
+                });
+        }
+
+        // ========== OPEN CUSTOMER WITH FULL DETAILS ==========
+        function openCustomerWithBooking(customerId, bookingId) {
+            let modal = document.getElementById('customerModal');
+            let content = document.getElementById('modalContent');
+            
+            content.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><p style="margin-top:15px;">Loading details...</p></div>';
+            modal.style.display = 'flex';
+            
+            fetch(`/api/user/${customerId}`)
+                .then(response => response.json())
+                .then(customer => {
+                    fetch(`/get_booking_details/${bookingId}`)
+                        .then(response => response.json())
+                        .then(booking => {
+                            let profileImg = customer.profile_image && customer.profile_image != 'None' 
+                                ? `/static/uploads/${customer.profile_image}` 
+                                : '/static/uploads/default.png';
+                            
+                            let imageHtml = '';
+                            if (booking.image_filename && booking.image_filename != '' && booking.image_filename != 'None') {
+                                imageHtml = `
+                                <div class="modal-section" style="text-align:center;">
+                                    <h4><i class="fas fa-camera"></i> Problem Image</h4>
+                                    <img src="/static/uploads/problems/${booking.image_filename}" 
+                                         style="max-width:100%; max-height:300px; border-radius:12px; border:3px solid #38bdf8; cursor:pointer;" 
+                                         onclick="window.open(this.src, '_blank')">
+                                </div>`;
+                            }
+                            
+                            let html = `
+                                <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                                    <div style="flex:1; min-width:280px;">
+                                        <div style="text-align:center; background:rgba(56,189,248,0.05); padding:20px; border-radius:16px;">
+                                            <img src="${profileImg}" style="width:120px; height:120px; border-radius:50%; border:3px solid #38bdf8; margin-bottom:15px; object-fit:cover;">
+                                            <h3 style="color:#38bdf8; font-size:20px;">${customer.username}</h3>
+                                            <span class="status-badge status-${(customer.status || 'Active').toLowerCase()}" style="margin-top:5px;">
+                                                ${customer.status || 'Active'}
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="modal-section">
+                                            <h4><i class="fas fa-id-card"></i> Customer Information</h4>
+                                            <p><i class="fas fa-hashtag" style="color:#38bdf8;"></i> <b>ID:</b> #${customer.id}</p>
+                                            <p><i class="fas fa-phone" style="color:#22c55e;"></i> <b>Phone:</b> ${customer.phone || 'N/A'}</p>
+                                            <p><i class="fas fa-envelope" style="color:#facc15;"></i> <b>Email:</b> ${customer.email || 'N/A'}</p>
+                                            <p><i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> <b>Location:</b> ${customer.location || 'N/A'}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="flex:2;">
+                                        <div class="modal-section">
+                                            <h4><i class="fas fa-tools"></i> Booking #${booking.id} Details</h4>
+                                            <p><b>Service:</b> ${booking.service_name || 'N/A'}</p>
+                                            <p><b>Title:</b> ${booking.title || 'N/A'}</p>
+                                            <p><b>Description:</b> ${booking.description || 'N/A'}</p>
+                                            <p><b>Address:</b> ${booking.address || 'N/A'}</p>
+                                            <p><b>Room:</b> ${booking.room || 'N/A'}</p>
+                                            <p><b>Urgency:</b> <span class="urgency-badge urgency-${booking.urgency || 'Normal'}">${booking.urgency || 'Normal'}</span></p>
+                                            <p><b>Status:</b> <span class="status-badge status-${booking.status || 'pending'}">${booking.status || 'pending'}</span></p>
+                                            <p><b>Amount:</b> ₹${booking.payment_amount || 0}</p>
+                                            <p><b>Booked On:</b> ${booking.created_at || 'N/A'}</p>
+                                        </div>
+                                        
+                                        ${imageHtml}
+                                    </div>
+                                </div>
+                            `;
+                            
+                            content.innerHTML = html;
+                        });
+                });
+        }
+
+        // ========== CHAT FUNCTIONS ==========
+        function openChatModal(bookingId, customerId, customerName, customerImage, serviceTitle) {
+            const modal = document.getElementById('chatModal');
+            
+            currentChatBooking = bookingId;
+            currentChatCustomer = customerName;
+            currentChatCustomerId = customerId;
+            
+            fetch(`/get_booking_details/${bookingId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('chatCustomerNameHeader').innerText = customerName;
+                    document.getElementById('chatBookingInfo').innerHTML = `
+                        <i class="fas fa-tools"></i> ${serviceTitle} • <i class="fas fa-hashtag"></i> #${bookingId}
+                    `;
+                })
+                .catch(error => console.error('Error:', error));
+            
+            const avatarDiv = document.getElementById('chatAvatar');
+            if (customerImage && customerImage != 'None' && customerImage != '') {
+                avatarDiv.innerHTML = `<img src="/static/uploads/${customerImage}" style="width:100%; height:100%; object-fit:cover;">`;
+            } else {
+                avatarDiv.innerHTML = `<i class="fas fa-user"></i>`;
+            }
+            
+            document.getElementById('chatMessages').innerHTML = `
+                <div style="text-align: center; color: #94a3b8; padding: 30px;">
+                    <i class="fas fa-comments" style="font-size: 48px; color: #38bdf8;"></i>
+                    <p>Start conversation with <strong style="color: #38bdf8;">${customerName}</strong></p>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+            
+            loadChatMessages(bookingId);
+            
+            if (chatRefreshInterval) clearInterval(chatRefreshInterval);
+            chatRefreshInterval = setInterval(() => loadChatMessages(bookingId), 3000);
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').style.display = 'none';
+            currentChatBooking = null;
+            currentChatCustomer = null;
+            currentChatCustomerId = null;
+            if (chatRefreshInterval) {
+                clearInterval(chatRefreshInterval);
+                chatRefreshInterval = null;
+            }
+        }
+
+        function loadChatMessages(bookingId) {
+            fetch(`/get_chat_messages/${bookingId}`)
+                .then(response => response.json())
+                .then(data => {
+                    displayMessages(data.messages);
+                })
+                .catch(error => console.error('Error loading messages:', error));
+        }
+
+        function displayMessages(messages) {
+            const messagesDiv = document.getElementById('chatMessages');
+            
+            if (!messages || messages.length === 0) {
+                return;
+            }
+            
+            const currentUserId = {{ session['user_id'] }};
+            let html = '';
+            
+            messages.forEach(msg => {
+                const isMine = msg.sender_id == currentUserId;
+                html += `
+                    <div class="message-bubble ${isMine ? 'my-message' : 'their-message'}" 
+                         style="align-self: ${isMine ? 'flex-end' : 'flex-start'};">
+                        ${!isMine ? `<div class="message-sender">${msg.sender_name}</div>` : ''}
+                        <div>${msg.message}</div>
+                        <div class="message-time">${msg.created_at}</div>
+                    </div>
+                `;
+            });
+            
+            messagesDiv.innerHTML = html;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatMessageInput');
+            const message = input.value.trim();
+            
+            if (!message) {
+                showToast('Please type a message', 'error');
+                return;
+            }
+            
+            if (!currentChatBooking) {
+                showToast('Chat session expired. Please reopen chat.', 'error');
+                return;
+            }
+            
+            const sendBtn = document.getElementById('sendChatBtn');
+            const originalText = sendBtn.innerHTML;
+            sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            sendBtn.disabled = true;
+            
+            fetch('/send_fixed_chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    booking_id: currentChatBooking,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const messagesDiv = document.getElementById('chatMessages');
+                    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    if (messagesDiv.children.length === 1 && messagesDiv.children[0].style.textAlign === 'center') {
+                        messagesDiv.innerHTML = '';
+                    }
+                    
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message-bubble my-message';
+                    messageDiv.style.alignSelf = 'flex-end';
+                    messageDiv.innerHTML = `<div>${message}</div><div class="message-time">${time}</div>`;
+                    
+                    messagesDiv.appendChild(messageDiv);
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                    
+                    input.value = '';
+                    showToast('Message sent!', 'success');
+                } else {
+                    showToast('Error: ' + (data.error || 'Unknown error'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Error sending message', 'error');
+            })
+            .finally(() => {
+                sendBtn.innerHTML = originalText;
+                sendBtn.disabled = false;
+            });
+        }
+
+        // ========== REFRESH SUMMARY FROM ROWS ==========
+        function refreshSummaryFromRows() {
+            let rows = document.querySelectorAll("#customerTable tbody tr.booking-row");
+            let total = rows.length;
+            let pending = 0, inProg = 0, completed = 0;
+            
+            rows.forEach(row => {
+                let status = row.dataset.status;
+                if (status === 'pending') pending++;
+                else if (status === 'in_progress') inProg++;
+                else if (status === 'completed') completed++;
+            });
+            
+            document.getElementById('totalCustomers').innerText = {{ customers|length }};
+            document.getElementById('withBookingsCount').innerText = {{ bookings|length }};
+            document.getElementById('pendingCount').innerText = pending;
+            document.getElementById('inProgressCount').innerText = inProg;
+            document.getElementById('completedCount').innerText = completed;
+
+            let allBtn = document.querySelector('.filter-btn[onclick*="all"]');
+            if (allBtn) allBtn.innerHTML = `📋 All ({{ total_bookings }})`;
+            
+            let pendBtn = document.querySelector('.filter-btn[onclick*="pending"]');
+            if (pendBtn) pendBtn.innerHTML = `⏳ Pending (${pending})`;
+            
+            let progBtn = document.querySelector('.filter-btn[onclick*="in_progress"]');
+            if (progBtn) progBtn.innerHTML = `⚡ In Progress (${inProg})`;
+            
+            let compBtn = document.querySelector('.filter-btn[onclick*="completed"]');
+            if (compBtn) compBtn.innerHTML = `✅ Completed (${completed})`;
+
+            let noBookingsBtn = document.querySelector('.filter-btn[onclick*="no_bookings"]');
+            if (noBookingsBtn) noBookingsBtn.innerHTML = `🚫 No Bookings ({{ customers_without_bookings }})`;
+        }
+
+        // ========== PAGINATION ==========
+        function paginateTable() {
+            const table = document.getElementById('customerTable');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            let filteredRows = rows.filter(row => {
+                if (currentFilter === 'all') return true;
+                if (currentFilter === 'no_bookings') {
+                    return !row.classList.contains('booking-row');
+                }
+                return row.classList.contains('booking-row') && row.dataset.status === currentFilter;
+            });
+            
+            const totalRows = filteredRows.length;
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+            
+            rows.forEach(row => row.style.display = 'none');
+            
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = Math.min(start + rowsPerPage, totalRows);
+            
+            for (let i = start; i < end; i++) {
+                if (filteredRows[i]) filteredRows[i].style.display = '';
+            }
+            
+            updatePaginationUI(totalPages, totalRows);
+        }
+
+        function updatePaginationUI(totalPages, totalRows) {
+            let paginationDiv = document.getElementById('pagination');
+            if (!paginationDiv) {
+                paginationDiv = document.createElement('div');
+                paginationDiv.id = 'pagination';
+                paginationDiv.className = 'pagination';
+                document.querySelector('.table-container').after(paginationDiv);
+            }
+            
+            if (totalPages <= 1) {
+                paginationDiv.innerHTML = '';
+                return;
+            }
+            
+            let html = `
+                <button class="filter-btn" onclick="changePage('prev')" ${currentPage === 1 ? 'disabled' : ''}>
+                    ⬅️ Previous
+                </button>
+                <span style="color:#fff; padding: 8px 15px;">Page ${currentPage} of ${totalPages}</span>
+                <button class="filter-btn" onclick="changePage('next')" ${currentPage === totalPages ? 'disabled' : ''}>
+                    Next ➡️
+                </button>
+                <span style="color:#94a3b8; padding: 8px 15px;">Total: ${totalRows} records</span>
+            `;
+            
+            paginationDiv.innerHTML = html;
+        }
+
+        function changePage(direction) {
+            if (direction === 'prev' && currentPage > 1) {
+                currentPage--;
+            } else if (direction === 'next') {
+                currentPage++;
+            }
+            paginateTable();
+        }
+
+        // ========== FILTER BY STATUS ==========
+        function filterByStatus(status, btnElement) {
+            currentFilter = status;
+            currentPage = 1;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            
+            paginateTable();
+            
+            let visibleCount = document.querySelectorAll("#customerTable tbody tr[style*='display: ']").length;
+            showToast(`Showing ${visibleCount} records`);
+        }
+
+        // ========== FILTER CUSTOMERS ==========
+        function filterCustomers() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let rows = document.querySelectorAll("#customerTable tbody tr");
+            
+            rows.forEach(row => {
+                let name = row.dataset.customerName?.toLowerCase() || "";
+                let phone = row.dataset.customerPhone?.toLowerCase() || "";
+                let email = row.dataset.customerEmail?.toLowerCase() || "";
+                let id = row.querySelector('td:nth-child(2)')?.innerText.toLowerCase() || "";
+                let location = row.querySelector('td:nth-child(6)')?.innerText.toLowerCase() || "";
+                let problem = row.querySelector('.problem-details strong')?.innerText.toLowerCase() || "";
+                
+                if (name.includes(input) || phone.includes(input) || email.includes(input) || id.includes(input) || location.includes(input) || problem.includes(input)) {
+                    row.dataset.searchMatch = 'true';
+                } else {
+                    row.dataset.searchMatch = 'false';
+                }
+            });
+            
+            currentPage = 1;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const rows = document.querySelectorAll("#customerTable tbody tr");
+            
+            rows.forEach(row => {
+                const matchesStatus = (currentFilter === 'all') || 
+                                     (currentFilter === 'no_bookings' && !row.classList.contains('booking-row')) ||
+                                     (row.classList.contains('booking-row') && row.dataset.status === currentFilter);
+                
+                const matchesSearch = row.dataset.searchMatch !== 'false';
+                
+                if (matchesStatus && matchesSearch) {
+                    row.dataset.tempShow = 'true';
+                } else {
+                    row.dataset.tempShow = 'false';
+                }
+            });
+            
+            paginateWithFilters();
+        }
+
+        function paginateWithFilters() {
+            const rows = Array.from(document.querySelectorAll("#customerTable tbody tr"));
+            const visibleRows = rows.filter(row => row.dataset.tempShow === 'true');
+            
+            const totalRows = visibleRows.length;
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+            
+            rows.forEach(row => row.style.display = 'none');
+            
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = Math.min(start + rowsPerPage, totalRows);
+            
+            for (let i = start; i < end; i++) {
+                if (visibleRows[i]) visibleRows[i].style.display = '';
+            }
+            
+            updatePaginationUI(totalPages, totalRows);
+        }
+        
+        // ========== MOBILE MENU TOGGLE ==========
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('active');
+    document.querySelector('.menu-overlay').classList.toggle('active');
+}
+
+// Close sidebar when clicking on menu item (mobile)
+document.querySelectorAll('.sidebar .menu-item').forEach(item => {
+    item.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+            toggleSidebar();
+        }
+    });
+});
+
+// Handle window resize
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+        document.querySelector('.sidebar').classList.remove('active');
+        document.querySelector('.menu-overlay').classList.remove('active');
+    }
+});
+
+        // ========== EXPORT CSV ==========
+        function exportToCSV() {
+            const rows = document.querySelectorAll("#customerTable tbody tr");
+            let csv = "Customer ID,Customer Name,Phone,Email,Location,Problem,Status,Payment Status,Amount\n";
+            
+            rows.forEach(row => {
+                const customerId = row.querySelector('td:nth-child(2)')?.innerText || '';
+                const customerName = row.querySelector('td:nth-child(3) strong')?.innerText || '';
+                const phone = row.querySelector('td:nth-child(4) span')?.innerText || '';
+                const email = row.querySelector('td:nth-child(5) span')?.innerText || '';
+                const location = row.querySelector('td:nth-child(6)')?.innerText || '';
+                
+                let problem = '';
+                let status = '';
+                let paymentStatus = '';
+                let amount = '';
+                
+                if (row.classList.contains('booking-row')) {
+                    problem = row.querySelector('.problem-details strong')?.innerText || '';
+                    status = row.querySelector('.status-badge:not(.status-paid):not(.status-unpaid)')?.innerText || '';
+                    
+                    const paymentCell = row.querySelector('td:nth-child(9)');
+                    if (paymentCell) {
+                        const paidBadge = paymentCell.querySelector('.status-paid');
+                        if (paidBadge) {
+                            paymentStatus = 'Paid';
+                            const amountSpan = paymentCell.querySelector('.payment-amount-small');
+                            if (amountSpan) amount = amountSpan.innerText;
+                        } else {
+                            paymentStatus = 'Unpaid';
+                        }
+                    }
+                } else {
+                    problem = 'No active bookings';
+                    status = row.querySelector('.status-badge')?.innerText || '';
+                    paymentStatus = '-';
+                }
+                
+                csv += `"${customerId}","${customerName}","${phone}","${email}","${location}","${problem}","${status}","${paymentStatus}","${amount}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'technician_customers.csv';
+            a.click();
+            showToast('✅ CSV exported successfully!');
+        }
+
+        // ========== LOAD SAVED STATUSES ==========
+        function loadSavedStatuses() {
+            let saved = JSON.parse(localStorage.getItem('bookingStatuses') || '{}');
+            Object.keys(saved).forEach(id => {
+                let row = document.querySelector(`[data-booking-id="${id}"]`);
+                if (row) {
+                    let status = saved[id];
+                    row.dataset.status = status;
+                    let badge = row.querySelector('.status-badge:not(.status-paid):not(.status-unpaid)');
+                    if (badge) {
+                        badge.className = 'status-badge status-' + status;
+                        badge.innerText = status.replace('_', ' ');
+                    }
+                }
+            });
+        }
+
+        // ========== NOTIFICATION DROPDOWN ==========
+        const bell = document.getElementById('notificationBell');
+        const drop = document.getElementById('notificationDropdown');
+        
+        if (bell) {
+            bell.addEventListener('click', (e) => { 
+                e.stopPropagation(); 
+                drop.classList.toggle('show'); 
+            });
+        }
+        
+        document.addEventListener('click', (e) => { 
+            if (!e.target.closest('.notification-area')) {
+                drop?.classList.remove('show'); 
+            }
+        });
+
+        // ========== MODAL FUNCTIONS ==========
+        function closeModal() { 
+            document.getElementById('customerModal').style.display = 'none'; 
+        }
+
+        function openImageModal(src) { 
+            document.getElementById('fullSizeImage').src = src; 
+            document.getElementById('imageModal').style.display = 'flex'; 
+        }
+        
+        function closeImageModal() { 
+            document.getElementById('imageModal').style.display = 'none'; 
+        }
+
+        // ========== TOAST ==========
+        function showToast(msg, type = 'success') {
+            let t = document.getElementById('toast');
+            t.textContent = msg; 
+            t.className = 'toast' + (type === 'error' ? ' error' : ''); 
+            t.style.display = 'block';
+            
+            setTimeout(() => { 
+                t.style.opacity = '0'; 
+                setTimeout(() => { 
+                    t.style.display = 'none'; 
+                    t.style.opacity = '1'; 
+                }, 200); 
+            }, 2000);
+        }
+
+        // ========== KEYBOARD SHORTCUTS ==========
+        document.addEventListener('keydown', (e) => { 
+            if (e.key === 'Escape') { 
+                closeImageModal(); 
+                closeModal(); 
+                closeChatModal();
+                closePaymentModal();
+            } 
+        });
+
+        // ========== INITIALIZE ==========
+        window.addEventListener('load', function() {
+            loadSavedStatuses();
+            refreshSummaryFromRows();
+            
+            document.querySelectorAll("#customerTable tbody tr").forEach(row => {
+                row.dataset.searchMatch = 'true';
+            });
+            
+            paginateTable();
+        });
+
+        // ========== MOBILE MENU TOGGLE ==========
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('active');
+    document.querySelector('.menu-overlay').classList.toggle('active');
+}
+
+// Close sidebar when clicking on menu item (mobile)
+document.querySelectorAll('.sidebar .menu-item').forEach(item => {
+    item.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+            toggleSidebar();
+        }
+    });
+});
+
+// Handle window resize
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+        document.querySelector('.sidebar').classList.remove('active');
+        document.querySelector('.menu-overlay').classList.remove('active');
+    }
+});
+
+// Touch-friendly scroll for tables
+const tableContainer = document.querySelector('.table-container');
+if (tableContainer) {
+    tableContainer.addEventListener('touchstart', function(e) {
+        this.style.overflowX = 'auto';
+    });
+}
+
+// Prevent zoom on double tap (for better mobile experience)
+document.addEventListener('touchend', function(e) {
+    const now = Date.now();
+    const DOUBLE_TAP_DELAY = 300;
+    if (now - lastTap < DOUBLE_TAP_DELAY) {
+        e.preventDefault();
+    }
+    lastTap = now;
+}, false);
+let lastTap = 0;
+    </script>
+</body>
+</html>

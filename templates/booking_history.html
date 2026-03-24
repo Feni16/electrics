@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History | TechnoFix AI</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+           * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+
+        .user-box {
+            text-align: right;
+        }
+
+        .user-name {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .user-role {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .nav-links a {
+            padding: 5px 15px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 8px;
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid #38bdf8;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .booking-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .booking-id {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .booking-date {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .booking-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-label {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .detail-value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        .status-in_progress {
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        /* Image Gallery Styles */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+            border-color: #38bdf8;
+            box-shadow: 0 0 15px #38bdf8;
+            z-index: 10;
+        }
+
+        .booking-image {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 2px solid #38bdf8;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .booking-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #38bdf8;
+        }
+
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            border: 3px solid #38bdf8;
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #ef4444;
+            font-size: 30px;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            transform: scale(1.2);
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            color: #94a3b8;
+        }
+
+        .no-data i {
+            font-size: 60px;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(2, 6, 23, 0.7);
+            color: #94a3b8;
+            margin-top: 50px;
+        }
+
+        /* View Details Button */
+        .view-btn {
+            padding: 8px 15px;
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            border: none;
+            border-radius: 20px;
+            color: #000;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .view-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px #38bdf8;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Image Modal -->
+<div id="imageModal" class="image-modal" onclick="if(event.target === this) closeModal()">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img class="modal-image" id="modalImage" src="" alt="Full size image">
+    </div>
+</div>
+
+<header>
+    <div class="logo" onclick="window.location.href='{{ url_for('customer_dashboard') }}'">
+        <i class="fas fa-bolt"></i> TechnoFix AI
+    </div>
+    <div class="user-box">
+        <span class="user-name">{{ session.get('name', 'User') }}</span>
+        <span class="user-role">{{ session.get('role', 'Customer')|upper }}</span>
+        <div class="nav-links">
+            <a href="{{ url_for('customer_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('customer_my_booking') }}">Bookings</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <a href="{{ url_for('customer_my_booking') }}" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Bookings
+    </a>
+
+    <h1><i class="fas fa-history"></i> Booking History</h1>
+
+    {% if bookings and bookings|length > 0 %}
+        {% for booking in bookings %}
+        <div class="booking-card" onclick="window.location.href='/booking-details/{{ booking.id }}'">
+            <div class="booking-header">
+                <span class="booking-id">#{{ booking.id }}</span>
+                <span class="booking-date">{{ booking.created_at.strftime('%d %B %Y, %I:%M %p') }}</span>
+            </div>
+            
+            <div class="booking-title">{{ booking.title }}</div>
+            
+            <div class="booking-details">
+                <div class="detail-item">
+                    <span class="detail-label">Service</span>
+                    <span class="detail-value">{{ booking.service.name }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Amount</span>
+                    <span class="detail-value">₹{{ booking.payment_amount }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Room</span>
+                    <span class="detail-value">{{ booking.room }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Urgency</span>
+                    <span class="detail-value">{{ booking.urgency }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Status</span>
+                    <span class="status status-{{ booking.status|lower }}">{{ booking.status }}</span>
+                </div>
+            </div>
+
+            {% if booking.description %}
+            <p style="color: #cbd5e1; margin: 10px 0;">
+                <strong>Description:</strong> {{ booking.description[:100] }}{% if booking.description|length > 100 %}...{% endif %}
+            </p>
+            {% endif %}
+
+            <!-- Image Gallery Section -->
+            {% if booking.image_filename %}
+            <div style="margin-top: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <i class="fas fa-image" style="color: #38bdf8;"></i>
+                    <span style="color: #94a3b8; font-size: 14px;">Problem Image:</span>
+                </div>
+                <img src="{{ url_for('static', filename='uploads/problems/' + booking.image_filename) }}" 
+                     class="booking-image" 
+                     onclick="event.stopPropagation(); openModal(this.src)"
+                     title="Click to enlarge">
+            </div>
+            {% endif %}
+
+            <!-- View Details Button -->
+            <div style="text-align: right; margin-top: 15px;">
+                <span class="view-btn" onclick="event.stopPropagation(); window.location.href='/booking-details/{{ booking.id }}'">
+                    <i class="fas fa-eye"></i> View Full Details
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="no-data">
+        <i class="fas fa-history"></i>
+        <h3>No Booking History Found</h3>
+        <p>Your booking history will appear here once you create service requests.</p>
+        <a href="{{ url_for('customer_my_booking') }}" class="back-btn" style="margin-top: 20px;">Create New Booking</a>
+    </div>
+    {% endif %}
+</div>
+
+<footer>
+    <p>© 2026 TechnoFix AI. All rights reserved.</p>
+</footer>
+
+<script>
+    // Open image in modal
+    function openModal(src) {
+        document.getElementById('modalImage').src = src;
+        document.getElementById('imageModal').style.display = 'flex';
+    }
+
+    // Close modal
+    function closeModal() {
+        document.getElementById('imageModal').style.display = 'none';
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+</script>
+
+</body>
+</html>

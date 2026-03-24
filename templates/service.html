@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechnoFIx AI | Choose Service</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#020617,#0a0f2c);
+    color:#e5e7eb;
+}
+
+/* HEADER */
+header{
+    padding:20px 70px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(2,6,23,0.6);
+    backdrop-filter:blur(12px);
+}
+header h1{
+    color:#7dd3fc;
+    font-size:1.8em;
+}
+header nav a{
+    margin-left:25px;
+    color:#cbd5f5;
+    text-decoration:none;
+}
+header nav a:hover{
+    color:#38bdf8;
+}
+
+/* MAIN */
+.main{
+    max-width:1100px;
+    margin:90px auto;
+    padding:0 40px;
+    text-align:center;
+}
+.main h2{
+    font-size:2.8em;
+    color:#7dd3fc;
+    margin-bottom:15px;
+}
+.main p{
+    color:#cbd5f5;
+    margin-bottom:50px;
+}
+
+/* SERVICE CARDS */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:40px;
+}
+.card{
+    padding:40px 30px;
+    border-radius:30px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(16px);
+    border:1px solid rgba(125,211,252,0.2);
+    transition:0.4s;
+    cursor:pointer;
+}
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 0 30px rgba(56,189,248,0.35);
+}
+.card.selected{
+    border:2px solid #38bdf8;
+    box-shadow:0 0 35px rgba(56,189,248,0.6);
+}
+.card span{
+    font-size:3.2em;
+}
+.card h3{
+    margin-top:15px;
+    color:#7dd3fc;
+}
+.card p{
+    font-size:0.95em;
+    margin-top:10px;
+}
+
+/* BUTTON */
+.btn{
+    margin-top:50px;
+    padding:14px 45px;
+    border:none;
+    border-radius:30px;
+    background:#38bdf8;
+    color:#020617;
+    font-size:1.1em;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+.btn:hover{
+    background:#7dd3fc;
+    box-shadow:0 0 20px rgba(125,211,252,0.6);
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:25px;
+    background:rgba(2,6,23,0.7);
+    backdrop-filter:blur(12px);
+    color:#cbd5f5;
+    font-size:0.9em;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>TechnoFIx AI</h1>
+    <nav>
+        <a href="{{ url_for('landing') }}">Home</a>
+        <a href="{{ url_for('service') }}">Services</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('login') }}">Login</a>
+
+    </nav>
+</header>
+
+<section class="main">
+    <h2>Select Your Service</h2>
+    <p>Choose the type of electrical service you need</p>
+
+    <div class="cards">
+        <div class="card" onclick="selectService('Home Service', this)">
+            <span>🏠</span>
+            <h3>Home Service</h3>
+            <p>Residential electrical repair, installation, and maintenance.</p>
+        </div>
+
+        <div class="card" onclick="selectService('Office Service', this)">
+            <span>🏢</span>
+            <h3>Office Service</h3>
+            <p>Commercial electrical solutions for offices and buildings.</p>
+        </div>
+    </div>
+
+    <button class="btn" onclick="goToLogin()">Continue</button>
+</section>
+
+<footer>
+    © 2026 TechnoFIx AI. All rights reserved.
+</footer>
+
+<script>
+let selectedService = "";
+
+function selectService(service, element){
+    selectedService = service;
+
+    document.querySelectorAll('.card').forEach(card => {
+        card.classList.remove('selected');
+    });
+
+    element.classList.add('selected');
+}
+
+function goToLogin(){
+    if(!selectedService){
+        alert("Please select a service first!");
+        return;
+    }
+
+    // ✅ Flask login route par redirect
+    window.location.href = "{{ url_for('login') }}?service=" + encodeURIComponent(selectedService);
+}
+</script>
+
+</body>
+</html>

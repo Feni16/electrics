@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <title>Emergency Button with AI Priority</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+    }
+
+    #emergencyBtn {
+      background-color: red;
+      color: white;
+      padding: 20px 40px;
+      font-size: 24px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+
+    #emergencyBtn:hover {
+      transform: scale(1.05);
+    }
+
+    #aiResponse {
+      margin-top: 30px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚨 Emergency Button with AI Priority 🚨</h1>
+  <button id="emergencyBtn">EMERGENCY</button>
+  <div id="aiResponse"></div>
+
+  <script>
+    document.getElementById('emergencyBtn').addEventListener('click', async () => {
+      const responseDiv = document.getElementById('aiResponse');
+      responseDiv.innerHTML = "Processing emergency request... ⏳";
+
+      // Simulate AI response with a delay
+      setTimeout(() => {
+        const aiMessages = [
+          "🚑 Emergency AI activated! Notifying authorities and prioritizing your request.",
+          "⚡ Priority alert sent! Help is on the way.",
+          "🔔 AI detected a critical situation! Emergency team alerted."
+        ];
+
+        // Pick a random AI response
+        const randomMessage = aiMessages[Math.floor(Math.random() * aiMessages.length)];
+        responseDiv.innerHTML = randomMessage;
+      }, 2000);
+    });
+  </script>
+</body>
+</html>

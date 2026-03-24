@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Register | TechnoFIx AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#020617,#0a0f2c);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#e5e7eb;
+}
+.card{
+    width:460px;
+    padding:45px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(15px);
+    box-shadow:0 0 30px rgba(125,211,252,0.25);
+    text-align:center;
+    animation:fade 1s ease;
+}
+@keyframes fade{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+h2{
+    font-size:2.2em;
+    color:#7dd3fc;
+    margin-bottom:10px;
+}
+.subtitle{
+    font-size:0.95em;
+    color:#cbd5f5;
+    margin-bottom:25px;
+}
+
+input, select{
+    width:100%;
+    padding:14px;
+    margin-bottom:18px;
+    border-radius:15px;
+    border:1px solid rgba(125,211,252,0.25);
+    background:rgba(2,6,23,0.6);
+    color:white;
+    outline:none;
+    transition:0.3s;
+}
+input::placeholder{
+    color:#94a3b8;
+}
+input:focus, select:focus{
+    border-color:#38bdf8;
+    box-shadow:0 0 10px rgba(56,189,248,0.4);
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:30px;
+    background:#38bdf8;
+    color:#020617;
+    font-size:1.1em;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+button:hover{
+    background:#7dd3fc;
+    box-shadow:0 0 15px rgba(125,211,252,0.6);
+}
+
+.link{
+    margin-top:18px;
+    font-size:0.9em;
+}
+.link a{
+    color:#7dd3fc;
+    text-decoration:none;
+}
+.link a:hover{
+    text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>📝 Register</h2>
+    <p class="subtitle">Create your TechnoFIx AI account</p>
+
+    <form method="POST">
+        <input name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email Address" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+
+        <!-- ROLE SELECTION -->
+        <select name="role" required>
+            <option value="">Select Role</option>
+            <option value="customer">Customer</option>
+            <option value="technician">Technician</option>
+            <option value="admin">Admin</option>
+        </select>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <div class="link">
+        Already have an account?
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+
+    <!-- Back to Home -->
+    <div class="link" style="margin-top:10px;">
+        <a href="{{ url_for('landing') }}">← Back to Home</a>
+    </div>
+</div>
+
+</body>
+</html>

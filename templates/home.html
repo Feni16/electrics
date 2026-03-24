@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechnoFIx AI | Smart Electrical Services</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+body{
+    background:linear-gradient(135deg,#020617,#0a0f2c);
+    color:#e5e7eb;
+}
+
+/* HEADER */
+header{
+    padding:20px 70px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(2,6,23,0.6);
+    backdrop-filter:blur(12px);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+header h1{
+    color:#7dd3fc;
+    font-size:1.9em;
+    font-weight:600;
+}
+header nav a{
+    margin-left:25px;
+    color:#cbd5f5;
+    text-decoration:none;
+    font-weight:500;
+}
+header nav a:hover{
+    color:#38bdf8;
+}
+
+/* HERO */
+.hero{
+    max-width:1200px;
+    margin:80px auto;
+    padding:0 40px;
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:50px;
+    align-items:center;
+}
+.hero h2{
+    font-size:3.2em;
+    line-height:1.2;
+    margin-bottom:20px;
+    color:#7dd3fc;
+    text-shadow:0 0 15px rgba(125,211,252,0.4);
+}
+.hero p{
+    color:#cbd5f5;
+    font-size:1.1em;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+.hero button{
+    padding:14px 40px;
+    border:none;
+    border-radius:30px;
+    background:#38bdf8;
+    color:#020617;
+    font-size:1.1em;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+.hero button:hover{
+    background:#7dd3fc;
+    box-shadow:0 0 20px rgba(125,211,252,0.6);
+}
+
+/* HERO CARD */
+.hero-card{
+    padding:40px;
+    border-radius:30px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(16px);
+    box-shadow:0 0 40px rgba(56,189,248,0.2);
+}
+.hero-card h3{
+    color:#7dd3fc;
+    margin-bottom:15px;
+}
+.hero-card ul{
+    list-style:none;
+}
+.hero-card li{
+    margin-bottom:12px;
+    color:#cbd5f5;
+    opacity:0;
+    transform:translateX(20px);
+    transition:0.6s ease;
+}
+.hero-card li.show{
+    opacity:1;
+    transform:translateX(0);
+}
+
+/* FEATURES */
+.features{
+    max-width:1200px;
+    margin:100px auto;
+    padding:0 40px;
+    text-align:center;
+}
+.features h2{
+    font-size:2.6em;
+    margin-bottom:15px;
+    color:#7dd3fc;
+}
+.features p{
+    color:#cbd5f5;
+    margin-bottom:50px;
+}
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+.feature{
+    padding:30px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(125,211,252,0.2);
+    transition:0.4s;
+}
+.feature:hover{
+    transform:translateY(-8px);
+    box-shadow:0 0 25px rgba(125,211,252,0.35);
+}
+.feature span{
+    font-size:2.8em;
+}
+.feature h4{
+    margin:15px 0;
+    color:#7dd3fc;
+}
+.feature p{
+    font-size:0.95em;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:25px;
+    background:rgba(2,6,23,0.7);
+    backdrop-filter:blur(12px);
+    color:#cbd5f5;
+    font-size:0.9em;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .hero{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>TechnoFIx AI</h1>
+    <nav>
+        <a href="{{ url_for('landing') }}">Home</a>
+        <a href="{{ url_for('service') }}">Services</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('login') }}">Login</a>
+    </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div>
+        <!-- AI TEXT -->
+        <h2 id="aiHeading"></h2>
+
+        <p>
+            TechnoFIx AI delivers fast, reliable, and intelligent electrical solutions
+            for homes and offices using modern AI technology.
+        </p>
+
+        <button onclick="location.href='{{ url_for('service') }}'">
+            Get Started
+        </button>
+    </div>
+
+    <!-- RIGHT CARD -->
+    <div class="hero-card">
+        <h3>Why TechnoFIx AI?</h3>
+        <ul id="aiPoints">
+            <li>✔ AI-based service analysis</li>
+            <li>✔ Emergency electrical support</li>
+            <li>✔ Verified technicians</li>
+            <li>✔ Real-time service tracking</li>
+        </ul>
+    </div>
+</section>
+
+<!-- FEATURES (UNCHANGED) -->
+<section class="features">
+    <h2>Our Smart Features</h2>
+    <p>Designed for speed, safety, and smart automation</p>
+
+    <div class="feature-grid">
+        <div class="feature">
+            <span>🤖</span>
+            <h4>AI Diagnosis</h4>
+            <p>Automatically analyzes electrical issues and assigns the best technician.</p>
+        </div>
+        <div class="feature">
+            <span>⚡</span>
+            <h4>Emergency Requests</h4>
+            <p>Instant help for critical electrical failures anytime.</p>
+        </div>
+        <div class="feature">
+            <span>📊</span>
+            <h4>Live Tracking</h4>
+            <p>Track service status in real time from your dashboard.</p>
+        </div>
+        <div class="feature">
+            <span>🔐</span>
+            <h4>Secure System</h4>
+            <p>Role-based login with admin, technician, and customer access.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    © 2026 TechnoFIx AI. All rights reserved.
+</footer>
+
+<!-- ===== JS ===== -->
+<script>
+/* AI TYPING EFFECT */
+const text = "Smart Electrical Services\nPowered by AI ";
+const heading = document.getElementById("aiHeading");
+let index = 0;
+
+function typeEffect(){
+    if(index < text.length){
+        heading.innerHTML += text[index] === "\n" ? "<br>" : text[index];
+        index++;
+        setTimeout(typeEffect, 60);
+    }
+}
+typeEffect();
+
+/* CARD POINTS ANIMATION */
+const points = document.querySelectorAll("#aiPoints li");
+points.forEach((point, i) => {
+    setTimeout(() => {
+        point.classList.add("show");
+    }, i * 600);
+});
+</script>
+
+</body>
+</html>

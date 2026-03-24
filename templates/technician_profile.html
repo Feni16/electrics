@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | TechnoFix AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            font-size: 14px;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 24px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid rgba(56, 189, 248, 0.15);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #38bdf8;
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 28px;
+            letter-spacing: -0.3px;
+        }
+
+        .profile-section {
+            text-align: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+            margin-bottom: 20px;
+        }
+
+        .profile-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #38bdf8, #0f172a);
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 600;
+            color: #fff;
+            border: 2.5px solid #38bdf8;
+            box-shadow: 0 8px 20px rgba(56,189,248,0.25);
+            overflow: hidden;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .profile-role {
+            color: #38bdf8;
+            font-size: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+
+        .sidebar-menu {
+            margin-top: 24px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            border-radius: 10px;
+            transition: all 0.2s;
+            cursor: pointer;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .menu-item:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            transform: translateX(4px);
+        }
+
+        .menu-item.active {
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .menu-item span:first-child {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            height: 100vh;
+            overflow-y: auto;
+            padding: 24px 28px;
+        }
+
+        .main::-webkit-scrollbar {
+            width: 6px;
+        }
+        .main::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .main::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 10px;
+        }
+
+        /* ===== TOPBAR ===== */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+        }
+
+        .welcome h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .date-badge {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .back-btn {
+            padding: 8px 18px;
+            background: #1e293b;
+            border: 1px solid rgba(56,189,248,0.2);
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #fff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .back-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+            border-color: #38bdf8;
+        }
+
+        /* ===== NOTIFICATION ===== */
+        .notification-area {
+            position: relative;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 10px;
+            background: #1e293b;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 1px solid rgba(56,189,248,0.2);
+        }
+
+        .notification-bell:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: #fff;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 52px;
+            right: 0;
+            width: 320px;
+            background: #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            display: none;
+            z-index: 1000;
+            border: 1px solid #38bdf8;
+        }
+
+        .notification-dropdown.show {
+            display: block;
+        }
+
+        .notification-item {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+
+        .notification-item.unread {
+            background: rgba(56,189,248,0.1);
+            border-left: 3px solid #38bdf8;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* ===== PROFILE CONTENT ===== */
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .profile-header h2 {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 24px;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(56,189,248,0.1);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .profile-avatar-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            border: 4px solid #38bdf8;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar-large .upload-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px;
+            font-size: 12px;
+            transform: translateY(100%);
+            transition: 0.3s;
+        }
+
+        .profile-avatar-large:hover .upload-overlay {
+            transform: translateY(0);
+        }
+
+        .profile-name-large {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .profile-role-large {
+            color: #38bdf8;
+            font-size: 14px;
+            background: rgba(56,189,248,0.1);
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 40px;
+            margin-bottom: 16px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            padding: 16px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .rating {
+            color: #fbbf24;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .rating span {
+            color: #94a3b8;
+            margin-left: 5px;
+        }
+
+        /* Edit Profile Card */
+        .edit-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(56,189,248,0.1);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .edit-card h3 {
+            color: #38bdf8;
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
+
+        .form-group input[readonly] {
+            background: rgba(30, 41, 59, 0.5);
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .btn-primary:hover {
+            background: #0ea5e9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #1e293b;
+            color: #fff;
+            border: 1px solid rgba(56,189,248,0.2);
+        }
+
+        .btn-secondary:hover {
+            background: #2d3a4f;
+        }
+
+        .hidden-form {
+            display: none;
+        }
+
+        /* Password Change Section */
+        .password-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .password-section h4 {
+            color: #94a3b8;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .alert {
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            color: #22c55e;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #38bdf8;
+            color: #0f172a;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 4000;
+            box-shadow: 0 10px 20px rgba(56,189,248,0.3);
+        }
+
+        .toast.error {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Status Badges (Added for recent bookings) */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-pending {
+            background: #facc15;
+            color: #0f172a;
+        }
+        .status-in_progress {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+        .status-completed {
+            background: #22c55e;
+            color: #0f172a;
+        }
+
+        /* Recent Bookings Table */
+        .recent-bookings {
+            margin-top: 30px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid rgba(56,189,248,0.1);
+        }
+
+        .recent-bookings h3 {
+            color: #38bdf8;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .recent-bookings table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .recent-bookings th {
+            text-align: left;
+            padding: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .recent-bookings td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .recent-bookings tr:hover td {
+            background: rgba(56,189,248,0.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+                padding: 20px 10px;
+            }
+            .sidebar h2 span:last-child,
+            .profile-name,
+            .profile-role,
+            .menu-item span:last-child {
+                display: none;
+            }
+            .main {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Image Modal (fullscreen) -->
+    <div class="image-modal" id="imageModal" onclick="if(event.target===this) closeImageModal()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:3000; justify-content:center; align-items:center;">
+        <div style="position:relative; max-width:90%; max-height:90%;">
+            <span onclick="closeImageModal()" style="position:absolute; top:-40px; right:0; color:#ef4444; font-size:36px; cursor:pointer;">&times;</span>
+            <img id="fullSizeImage" style="max-width:100%; max-height:90vh; border:3px solid #38bdf8; border-radius:16px;">
+        </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2><span>⚡</span><span>TechnoFix AI</span></h2>
+        
+        <div class="profile-section">
+            <div class="profile-image">
+                {% if technician.profile_image and technician.profile_image != 'None' %}
+                    <img src="{{ url_for('static', filename='uploads/' + technician.profile_image) }}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                {% elif technician.username %}
+                    {{ technician.username[0:2]|upper }}
+                {% else %}
+                    TE
+                {% endif %}
+            </div>
+            <div class="profile-name">{{ technician.username if technician.username else 'Technician' }}</div>
+            <div class="profile-role">
+                {% if technician.specialization %}
+                    {{ technician.specialization }}
+                {% else %}
+                    Senior Technician
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="{{ url_for('technician_dashboard') }}" class="menu-item">
+                <span>📊</span><span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('technician_customers') }}" class="menu-item">
+                <span>👥</span><span>My Customers</span>
+            </a>
+            <a href="{{ url_for('technician_help') }}" class="menu-item">
+                <span>❓</span><span>Help & Support</span>
+            </a>
+            <a href="{{ url_for('technician_profile') }}" class="menu-item active">
+                <span>👤</span><span>My Profile</span>
+            </a>
+            <a href="{{ url_for('logout') }}" class="menu-item" style="margin-top:30px;">
+                <span>🚪</span><span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="welcome">
+                <h1>My Profile 👤</h1>
+                <div class="date-badge">{{ now.strftime('%A, %d %B %Y') if now else '' }}</div>
+            </div>
+            <div class="notification-area">
+                <div class="notification-bell" id="notificationBell">
+                    <span>🔔</span>
+                    <span class="notification-badge" id="notificationBadge">{{ unread_notifications if unread_notifications else 0 }}</span>
+                </div>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-list" id="notificationList">
+                        {% if notifications and notifications|length > 0 %}
+                            {% for notification in notifications %}
+                            <div class="notification-item {% if not notification.is_read %}unread{% endif %}" onclick="markAsRead({{ notification.id }})">
+                                <div class="notification-message">{{ notification.message }}</div>
+                                <div class="notification-time">{{ notification.created_at }}</div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="notification-item">No notifications</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFILE HEADER -->
+        <div class="profile-header">
+            <h2><i class="fas fa-user-circle" style="color:#38bdf8;"></i> Personal Information</h2>
+            <a href="{{ url_for('technician_dashboard') }}" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- PROFILE GRID -->
+        <div class="profile-grid">
+            <!-- Left Column - Profile Card -->
+            <div class="profile-card">
+                <div class="profile-avatar-large" onclick="document.getElementById('photoInput').click();">
+                    {% if technician.profile_image and technician.profile_image != 'None' %}
+                        <img src="{{ url_for('static', filename='uploads/' + technician.profile_image) }}" id="profilePreview" alt="Profile">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='uploads/default.png') }}" id="profilePreview" alt="Default Profile">
+                    {% endif %}
+                    <div class="upload-overlay">
+                        <i class="fas fa-camera"></i> Change Photo
+                    </div>
+                </div>
+                
+                <!-- Hidden Form for Photo Upload -->
+                <form id="photoUploadForm" action="{{ url_for('technician_update_profile') }}" method="POST" enctype="multipart/form-data" style="display: none;">
+                    <input type="file" id="photoInput" name="photo" accept="image/*" onchange="uploadPhoto()">
+                </form>
+
+                <div class="profile-name-large">{{ technician.username }}</div>
+                <div class="profile-role-large">{{ technician.specialization or 'Senior Technician' }}</div>
+                
+                <div class="rating">
+                    {% set rating = technician.rating or 4.5 %}
+                    {% for i in range(5) %}
+                        {% if i < rating|int %}
+                            ★
+                        {% elif rating - i > 0.5 %}
+                            ★
+                        {% elif rating - i > 0 %}
+                            ½
+                        {% else %}
+                            ☆
+                        {% endif %}
+                    {% endfor %}
+                    <span>({{ rating }})</span>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">{{ total_bookings or 0 }}</div>
+                        <div class="stat-label">Total Jobs</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">{{ completed_bookings or 0 }}</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">{{ pending_bookings or 0 }}</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                </div>
+                
+                <div style="color:#94a3b8; font-size:12px; margin-top:10px;">
+                    <i class="fas fa-calendar"></i> Member since: {{ technician.created_at.strftime('%d %b %Y') if technician.created_at else 'N/A' }}
+                </div>
+            </div>
+
+            <!-- Right Column - Edit Profile -->
+           <!-- Right Column - Edit Profile -->
+<div class="edit-card">
+    <h3><i class="fas fa-edit"></i> Edit Profile</h3>
+    
+    <form action="{{ url_for('technician_update_profile') }}" method="POST" id="profileForm">
+        <!-- 👇 IMPORTANT: Hidden fields with current values -->
+        <input type="hidden" name="name" value="{{ technician.username }}">
+        <input type="hidden" name="email" value="{{ technician.email }}">
+        <input type="hidden" name="phone" value="{{ technician.phone }}">
+        
+        <!-- Display fields for user (readonly) -->
+        <div class="form-group">
+            <label><i class="fas fa-user"></i> Full Name</label>
+            <input type="text" value="{{ technician.username }}" readonly class="form-control">
+            <small style="color:#64748b;">Name cannot be changed</small>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" value="{{ technician.email }}" readonly class="form-control">
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-phone"></i> Phone</label>
+                <input type="tel" value="{{ technician.phone }}" readonly class="form-control">
+            </div>
+        </div>
+        
+        <!-- Editable fields -->
+        <div class="form-group">
+            <label><i class="fas fa-map-marker-alt"></i> Location</label>
+            <input type="text" name="location" value="{{ technician.location }}">
+        </div>
+        
+        <div class="form-group">
+            <label><i class="fas fa-tools"></i> Specialization</label>
+            <input type="text" name="specialization" value="{{ technician.specialization }}" placeholder="e.g., AC Repair, Plumbing">
+        </div>
+        
+        <div class="form-group">
+            <label><i class="fas fa-map-pin"></i> Full Address</label>
+            <textarea name="address" rows="3">{{ technician.address }}</textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Save Changes
+        </button>
+    </form>
+                <!-- Password Change Section -->
+                <div class="password-section">
+                    <h4><i class="fas fa-lock"></i> Change Password</h4>
+                    
+                    <form action="{{ url_for('change_password') }}" method="POST" id="passwordForm" onsubmit="return validatePassword()">
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input type="password" name="current_password" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" name="new_password" id="newPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" name="confirm_password" id="confirmPassword" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-secondary">
+                            <i class="fas fa-key"></i> Update Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Bookings -->
+        <div class="recent-bookings">
+            <h3><i class="fas fa-history" style="color:#38bdf8;"></i> Recent Bookings</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in recent_bookings %}
+                    <tr>
+                        <td>#{{ booking.id }}</td>
+                        <td>{{ booking.customer_name }}</td>
+                        <td>{{ booking.title }}</td>
+                        <td>
+                            <span class="status-badge status-{{ booking.status }}">{{ booking.status|replace('_', ' ') }}</span>
+                        </td>
+                        <td>{{ booking.created_at.strftime('%d %b %Y') if booking.created_at else 'N/A' }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align:center; padding:40px; color:#64748b;">No recent bookings found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" style="display: none;">Message</div>
+
+    <script>
+        // ========== NOTIFICATION FUNCTIONS ==========
+        const bell = document.getElementById('notificationBell');
+        const drop = document.getElementById('notificationDropdown');
+        
+        bell.addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            drop.classList.toggle('show'); 
+        });
+        
+        document.addEventListener('click', (e) => { 
+            if (!e.target.closest('.notification-area')) {
+                drop.classList.remove('show'); 
+            }
+        });
+
+        function markAsRead(notificationId) {
+            fetch('/mark_notification_read/' + notificationId, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const badge = document.getElementById('notificationBadge');
+                    if (badge) {
+                        let count = parseInt(badge.textContent) || 0;
+                        badge.textContent = count > 0 ? count - 1 : 0;
+                    }
+                    showToast('Notification marked as read');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // ========== PROFILE PHOTO UPLOAD ==========
+        function uploadPhoto() {
+            const input = document.getElementById('photoInput');
+            const file = input.files[0];
+            
+            if (file) {
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePreview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+                
+                // Auto submit form
+                document.getElementById('photoUploadForm').submit();
+                showToast('Uploading photo...');
+            }
+        }
+
+        // ========== PASSWORD VALIDATION ==========
+        function validatePassword() {
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            
+            if (newPass !== confirmPass) {
+                showToast('Passwords do not match!', 'error');
+                return false;
+            }
+            
+            if (newPass.length < 6) {
+                showToast('Password must be at least 6 characters!', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // ========== IMAGE MODAL ==========
+        function openImageModal(src) { 
+            document.getElementById('fullSizeImage').src = src; 
+            document.getElementById('imageModal').style.display = 'flex'; 
+        }
+        
+        function closeImageModal() { 
+            document.getElementById('imageModal').style.display = 'none'; 
+        }
+        
+        
+        // ========== SHOW TOAST ==========
+        function showToast(msg, type = 'success') {
+            let t = document.getElementById('toast');
+            t.textContent = msg; 
+            t.className = 'toast' + (type === 'error' ? ' error' : ''); 
+            t.style.display = 'block';
+            
+            setTimeout(() => { 
+                t.style.opacity = '0'; 
+                setTimeout(() => { 
+                    t.style.display = 'none'; 
+                    t.style.opacity = '1'; 
+                }, 200); 
+            }, 2000);
+        }
+
+        // ========== KEYBOARD SHORTCUTS ==========
+        document.addEventListener('keydown', (e) => { 
+            if (e.key === 'Escape') { 
+                closeImageModal(); 
+            } 
+        });
+    </script>
+</body>
+</html>

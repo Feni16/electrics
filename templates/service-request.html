@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Service & Technician Suggestion</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+body{
+  font-family:Arial;
+  background:#f1f5f9;
+  padding:30px;
+}
+.box{
+  background:#fff;
+  max-width:500px;
+  margin:auto;
+  padding:25px;
+  border-radius:10px;
+}
+textarea,select,button{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+}
+button{
+  background:#2563eb;
+  color:white;
+  border:none;
+}
+</style>
+</head>
+
+<body>
+<div class="box">
+  <h3>AI Service Request</h3>
+
+  <label>Describe Problem</label>
+  <textarea id="problem" placeholder="AC not cooling, fan noise..."></textarea>
+
+  <label>AI Suggested Service</label>
+  <select id="service"></select>
+
+  <label>AI Suggested Technician</label>
+  <select id="technician"></select>
+
+  <button onclick="submitRequest()">Submit Request</button>
+</div>
+
+<script>
+// AI SERVICE SUGGESTION
+function aiSuggestService(){
+  let text = problem.value.toLowerCase();
+  service.innerHTML="";
+
+  if(text.includes("ac")){
+    service.innerHTML="<option>AC Repair</option>";
+  }
+  else if(text.includes("fan")){
+    service.innerHTML="<option>Fan Repair</option>";
+  }
+  else if(text.includes("wire") || text.includes("short")){
+    service.innerHTML="<option>Electrical Wiring</option>";
+  }
+  else{
+    service.innerHTML="<option>General Electrical</option>";
+  }
+
+  aiAssignTechnician();
+}
+
+problem.addEventListener("keyup", aiSuggestService);
+
+// AI TECHNICIAN ASSIGNMENT
+function aiAssignTechnician(){
+  let s = service.value;
+  technician.innerHTML="";
+
+  if(s=="AC Repair"){
+    technician.innerHTML="<option>Rahul (AC Expert)</option>";
+  }
+  else if(s=="Fan Repair"){
+    technician.innerHTML="<option>Amit (Fan Specialist)</option>";
+  }
+  else if(s=="Electrical Wiring"){
+    technician.innerHTML="<option>Suresh (Wiring Expert)</option>";
+  }
+  else{
+    technician.innerHTML="<option>Available Technician</option>";
+  }
+}
+
+function submitRequest(){
+  alert("Request Submitted & Technician Assigned");
+}
+</script>
+</body>
+</html>

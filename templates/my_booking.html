@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings | TechnoFix AI</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-box {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .user-role {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .nav-links a {
+            padding: 6px 15px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 8px;
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.1) !important;
+            color: #ef4444 !important;
+        }
+
+        .logout-btn:hover {
+            background: #ef4444 !important;
+            color: #fff !important;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Page Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid #38bdf8;
+            border-radius: 30px;
+            color: #fff;
+            text-decoration: none;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .flash-message {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+            cursor: pointer;
+        }
+
+        .flash-success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid #10b981;
+            color: #10b981;
+        }
+
+        .flash-danger {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .flash-info {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 50px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            border-radius: 40px;
+            color: #94a3b8;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tab-btn:hover {
+            color: #38bdf8;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            color: #000;
+        }
+
+        /* Card */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+        }
+
+        .card h2 {
+            color: #38bdf8;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        label i {
+            color: #38bdf8;
+            margin-right: 8px;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: #38bdf8;
+        }
+
+        /* File Upload */
+        .file-upload-area {
+            border: 2px dashed rgba(56, 189, 248, 0.3);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            background: rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-upload-area:hover {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .file-upload-area.dragover {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .file-upload-area i {
+            font-size: 40px;
+            color: #38bdf8;
+            margin-bottom: 10px;
+        }
+
+        .file-upload-area p {
+            margin-bottom: 5px;
+        }
+
+        .file-upload-area small {
+            color: #64748b;
+            font-size: 11px;
+        }
+
+        .file-input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .image-preview-wrapper {
+            display: none;
+            margin-top: 15px;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #38bdf8;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ef4444;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .remove-image:hover {
+            transform: scale(1.1);
+            background: #dc2626;
+        }
+
+        .file-info {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Contact Buttons */
+        .contact-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn-call {
+            background: #22c55e;
+        }
+
+        .btn-call:hover {
+            box-shadow: 0 0 15px #22c55e;
+        }
+
+        .btn-chat {
+            background: #38bdf8;
+        }
+
+        .btn-chat:hover {
+            box-shadow: 0 0 15px #38bdf8;
+        }
+
+        .btn-small {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+        }
+
+        .tech-name {
+            color: #38bdf8;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .tech-phone {
+            color: #94a3b8;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .no-phone {
+            color: #ef4444;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            justify-content: center;
+        }
+
+        .not-assigned {
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        /* Price Preview */
+        .price-preview {
+            padding: 15px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #38bdf8;
+            margin: 20px 0;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 13px;
+            width: auto;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            padding: 15px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        tr {
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        tr:hover {
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        /* Badges */
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        .badge-in_progress {
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+        }
+
+        .badge-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .badge-rejected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .urgency-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .urgency-normal {
+            background: #475569;
+            color: #fff;
+        }
+
+        .urgency-urgent {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .urgency-emergency {
+            background: #dc2626;
+            color: #fff;
+            animation: blink 1s infinite;
+        }
+
+        /* Image in table */
+        .problem-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #38bdf8;
+        }
+
+        .problem-image:hover {
+            transform: scale(3);
+            box-shadow: 0 0 20px #38bdf8;
+            z-index: 10;
+            border-radius: 8px;
+        }
+
+        /* History Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(56, 189, 248, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 8px;
+            color: #fff;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* No Data */
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            color: #94a3b8;
+        }
+
+        .no-data i {
+            font-size: 60px;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        /* Loading Overlay */
+        #loadingOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(56, 189, 248, 0.3);
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(2, 6, 23, 0.7);
+            color: #94a3b8;
+            margin-top: 50px;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Chat Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border-radius: 24px;
+            padding: 25px;
+            border: 2px solid #38bdf8;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: modalSlide 0.3s ease;
+            width: 500px;
+            max-width: 95%;
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(56,189,248,0.2);
+        }
+
+        .modal-header h2 {
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+        }
+
+        .modal-close {
+            cursor: pointer;
+            font-size: 28px;
+            color: #ef4444;
+            transition: 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(239,68,68,0.1);
+        }
+
+        .modal-close:hover {
+            background: #ef4444;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        /* Technician Info in Modal */
+        .tech-info-modal {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(56,189,248,0.1);
+            border-radius: 12px;
+            border-left: 4px solid #38bdf8;
+        }
+
+        .tech-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #000;
+            overflow: hidden;
+        }
+
+        .tech-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .tech-details {
+            flex: 1;
+        }
+
+        .tech-details h4 {
+            color: #38bdf8;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .tech-details p {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        /* Chat Messages Area */
+        .chat-messages {
+            height: 350px;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Message Bubbles */
+        .message-bubble {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-bottom: 5px;
+            word-wrap: break-word;
+            animation: messagePop 0.2s ease;
+        }
+
+        .my-message {
+            align-self: flex-end;
+            background: #38bdf8;
+            color: #000;
+            border-bottom-right-radius: 4px;
+        }
+
+        .their-message {
+            align-self: flex-start;
+            background: #334155;
+            color: #fff;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 9px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .message-sender {
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: #38bdf8;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 12px 16px;
+            background: #334155;
+            border-radius: 18px;
+            width: fit-content;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); background: #38bdf8; }
+        }
+
+        /* Message Input */
+        .message-input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px 18px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(56,189,248,0.3);
+            border-radius: 30px;
+            color: #fff;
+            outline: none;
+        }
+
+        .message-input:focus {
+            border-color: #38bdf8;
+        }
+
+        .send-btn {
+            background: #38bdf8;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #38bdf8;
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+                text-align: center;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .tabs {
+                flex-direction: column;
+                border-radius: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay">
+    <div class="spinner"></div>
+    <p style="color: #38bdf8; margin-top: 20px;">Processing...</p>
+</div>
+
+<header>
+    <div class="logo" onclick="window.location.href='{{ url_for('customer_dashboard') }}'">
+        <i class="fas fa-bolt"></i>
+        TechnoFix AI
+    </div>
+
+    <div class="user-box">
+        <span class="user-name">{{ session.get('name', 'User') }}</span>
+        <span class="user-role">{{ session.get('role', 'Customer')|upper }}</span>
+        <div class="nav-links">
+            <a href="{{ url_for('customer_dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="{{ url_for('profile_page') }}"><i class="fas fa-user"></i> Profile</a>
+            <a href="{{ url_for('feedback_page') }}"><i class="fas fa-star"></i> Feedback</a>
+            </a>
+            <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>
+            <i class="fas fa-calendar-check"></i>
+            My Bookings
+        </h1>
+        <a href="{{ url_for('customer_dashboard') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Flash Messages -->
+    <div class="flash-messages" id="flashMessages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}" onclick="this.remove()">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('current')" id="tabCurrent">
+            <i class="fas fa-clock"></i> Current Bookings
+        </button>
+        <button class="tab-btn" onclick="switchTab('history')" id="tabHistory">
+            <i class="fas fa-history"></i> Booking History
+        </button>
+    </div>
+
+    <!-- CURRENT BOOKINGS SECTION -->
+    <div id="currentBookings">
+        <!-- Create Booking Form -->
+        <div class="card">
+            <h2><i class="fas fa-plus-circle"></i> New Service Request</h2>
+            
+            <form method="POST" action="{{ url_for('book_service_ajax') }}" enctype="multipart/form-data" id="bookingForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label><i class="fas fa-tools"></i> Service</label>
+                        <select name="service_id" id="serviceSelect" required>
+                            <option value="">Select Service</option>
+                            {% for service in services %}
+                                <option value="{{ service.id }}" data-price="{{ service.price }}">
+                                    {{ service.name }} - ₹{{ service.price }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-exclamation-triangle"></i> Urgency</label>
+                        <select name="urgency" required>
+                            <option value="Normal">Normal</option>
+                            <option value="Urgent">Urgent</option>
+                            <option value="Emergency">Emergency</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-heading"></i> Title</label>
+                        <input type="text" name="title" placeholder="e.g., Fan not working" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-align-left"></i> Description</label>
+                        <textarea name="description" placeholder="Describe your issue..."></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-map-marker-alt"></i> Address</label>
+                        <input type="text" name="address" placeholder="Your full address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-door-open"></i> Room</label>
+                        <select name="room" required>
+                            <option value="">Select Room</option>
+                            <option value="Living Room">Living Room</option>
+                            <option value="Bedroom">Bedroom</option>
+                            <option value="Kitchen">Kitchen</option>
+                            <option value="Bathroom">Bathroom</option>
+                            <option value="Office">Office</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-image"></i> Upload Image</label>
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click or drag image to upload</p>
+                            <small>Max 5MB (JPG, PNG, GIF)</small>
+                            <input type="file" id="fileInput" name="problem_image" class="file-input" accept="image/*" onchange="previewImage(this)">
+                        </div>
+                        
+                        <div class="image-preview-wrapper" id="imagePreviewWrapper">
+                            <img class="image-preview" id="imagePreview" src="" alt="Preview">
+                            <button type="button" class="remove-image" onclick="removeImage()">×</button>
+                        </div>
+
+                        <div class="file-info" id="fileInfo" style="display: none;">
+                            <i class="fas fa-check-circle" style="color: #22c55e;"></i>
+                            <span id="fileName"></span>
+                        </div>
+                    </div>
+                </div>
+
+<!-- Price Preview - CLICKABLE -->
+<div class="price-preview" id="pricePreview" style="cursor: pointer;" onclick="openScannerWithBooking()">
+    <i class="fas fa-qrcode"></i> <span id="priceText">Select a service to see price</span>
+    <i class="fas fa-chevron-right" style="margin-left: 10px; font-size: 14px;"></i>
+</div>
+
+                <button type="submit" class="btn-submit" onclick="return validateForm()">
+                    <i class="fas fa-paper-plane"></i> Book Service
+                </button>
+            </form>
+        </div>
+
+        <!-- Current Bookings Table -->
+        {% if current_bookings and current_bookings|length > 0 %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Service</th>
+                        <th>Technician</th>
+                        <th>Image</th>
+                        <th>Date</th>
+                        <th>Urgency</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in current_bookings %}
+                    <tr onclick="viewBooking({{ booking.id }})">
+                        <td>#{{ booking.id }}</td>
+                        <td>{{ booking.service.name }}</td>
+                       <td>
+    <a href="{{ url_for('scan_payment', booking_id=booking.id) }}" style="text-decoration: none;">
+        <span style="color: #38bdf8; font-weight: 600; cursor: pointer; padding: 6px 15px; background: linear-gradient(90deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.2)); border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #38bdf8; transition: all 0.3s ease;"
+              onmouseover="this.style.background='#38bdf8'; this.style.color='#000'; this.style.transform='scale(1.05)'" 
+              onmouseout="this.style.background='linear-gradient(90deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.2))'; this.style.color='#38bdf8'; this.style.transform='scale(1)'">
+            <i class="fas fa-qrcode"></i> 
+            <span style="font-size: 14px;">₹{{ booking.payment_amount }}</span>
+            <i class="fas fa-camera" style="font-size: 10px; opacity: 0.7;"></i>
+        </span>
+    </a>
+</td>
+                        <td onclick="event.stopPropagation()">
+                            {% if booking.image_filename %}
+                                <img src="{{ url_for('static', filename='uploads/problems/' + booking.image_filename) }}" 
+                                     class="problem-image"
+                                     onclick="openImage(this.src); event.stopPropagation();">
+                            {% else %}
+                                <span style="color: #64748b;">-</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ booking.created_at.strftime('%d-%m-%Y') if booking.created_at else 'N/A' }}</td>
+                        <td>
+                            <span class="urgency-badge urgency-{{ booking.urgency|lower }}">
+                                {{ booking.urgency }}
+                            </span>
+                        </td>
+                        <!-- AMOUNT COLUMN - CLICKABLE PAYMENT LINK -->
+                        <td>
+    <a href="{{ url_for('scan_payment', booking_id=booking.id) }}" style="text-decoration: none;">
+        <span style="color: #38bdf8; font-weight: 600; cursor: pointer; padding: 6px 15px; background: linear-gradient(90deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.2)); border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #38bdf8; transition: all 0.3s ease;"
+              onmouseover="this.style.background='#38bdf8'; this.style.color='#000'; this.style.transform='scale(1.05)'" 
+              onmouseout="this.style.background='linear-gradient(90deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.2))'; this.style.color='#38bdf8'; this.style.transform='scale(1)'">
+            <i class="fas fa-qrcode"></i> 
+            <span style="font-size: 14px;">₹{{ booking.payment_amount }}</span>
+            <i class="fas fa-camera" style="font-size: 10px; opacity: 0.7;"></i>
+        </span>
+    </a>
+</td>
+                        <td>
+                            <span class="badge badge-{{ booking.status|lower }}">
+                                {{ booking.status }}
+                            </span>
+                        </td>
+                        <td onclick="event.stopPropagation()">
+                            {% if booking.technician %}
+                                <div style="display: flex; gap: 8px; justify-content: center;">
+                                    <!-- Call Button -->
+                                    {% if booking.technician.phone and booking.technician.phone != 'None' %}
+                                    <a href="tel:{{ booking.technician.phone }}" 
+                                       class="contact-btn btn-call"
+                                       title="Call {{ booking.technician.username }}">
+                                        <i class="fas fa-phone"></i>
+                                    </a>
+                                    {% endif %}
+                                    
+                                    <!-- Chat Button -->
+                                    <button onclick='openChatModal(
+                                        {{ booking.id }},
+                                        {{ booking.technician.id }},
+                                        "{{ booking.technician.username }}",
+                                        "{{ booking.technician.profile_image }}",
+                                        "{{ booking.service.name }}"
+                                    ); event.stopPropagation();'
+                                            class="contact-btn btn-chat"
+                                            title="Chat with {{ booking.technician.username }}">
+                                        <i class="fas fa-comment-dots"></i>
+                                    </button>
+                                </div>
+                            {% else %}
+                                <span class="not-assigned">
+                                    <i class="fas fa-user-slash"></i> Not assigned
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <i class="fas fa-calendar-times"></i>
+            <h3>No Current Bookings</h3>
+            <p>Use the form above to create a new service request.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- BOOKING HISTORY SECTION -->
+    <div id="bookingHistory" style="display: none;">
+        <div class="card">
+            <h2><i class="fas fa-history"></i> Booking History</h2>
+            
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>Total Bookings</h4>
+                    <div class="number">{{ total_bookings|default(0) }}</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Completed</h4>
+                    <div class="number">{{ completed_count|default(0) }}</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Pending</h4>
+                    <div class="number">{{ pending_count|default(0) }}</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Total Spent</h4>
+                    <div class="number">₹{{ total_spent|default(0) }}</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters">
+                <input type="text" class="filter-input" id="searchInput" placeholder="Search by service..." onkeyup="filterHistory()">
+                <select class="filter-select" id="statusFilter" onchange="filterHistory()">
+                    <option value="all">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+
+            <!-- History Table -->
+            {% if all_bookings and all_bookings|length > 0 %}
+            <div class="table-container">
+                <table id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Service</th>
+                            <th>Technician</th>
+                            <th>Date</th>
+                            <th>Urgency</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in all_bookings %}
+                        <tr class="history-row" data-status="{{ booking.status }}" data-service="{{ booking.service.name }}">
+                            <td>#{{ booking.id }}</td>
+                            <td>{{ booking.service.name }}</td>
+                            <td>
+                                {% if booking.technician %}
+                                    <div style="display: flex; align-items: center; gap: 5px;">
+                                        {% if booking.technician.profile_image and booking.technician.profile_image != 'None' %}
+                                            <img src="{{ url_for('static', filename='uploads/' + booking.technician.profile_image) }}" 
+                                                 style="width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8;">
+                                        {% else %}
+                                            <div style="width: 25px; height: 25px; border-radius: 50%; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #000;">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        {% endif %}
+                                        <span style="color: #38bdf8;">{{ booking.technician.username }}</span>
+                                    </div>
+                                {% else %}
+                                    <span style="color: #64748b;">-</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ booking.created_at.strftime('%d-%m-%Y %H:%M') if booking.created_at else 'N/A' }}</td>
+                            <td>
+                                <span class="urgency-badge urgency-{{ booking.urgency|lower }}">
+                                    {{ booking.urgency }}
+                                </span>
+                            </td>
+                            <!-- AMOUNT COLUMN - CLICKABLE PAYMENT LINK -->
+                          <td>
+    <a href="{{ url_for('scan_payment', booking_id=booking.id) }}" style="text-decoration: none;">
+        <span style="color: #38bdf8; font-weight: 600; cursor: pointer; padding: 6px 15px; background: linear-gradient(90deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.2)); border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #38bdf8; transition: all 0.3s ease;"
+              onmouseover="this.style.background='#38bdf8'; this.style.color='#000'; this.style.transform='scale(1.05)'" 
+              onmouseout="this.style.background='linear-gradient(90deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.2))'; this.style.color='#38bdf8'; this.style.transform='scale(1)'">
+            <i class="fas fa-qrcode"></i> 
+            <span style="font-size: 14px;">₹{{ booking.payment_amount }}</span>
+            <i class="fas fa-camera" style="font-size: 10px; opacity: 0.7;"></i>
+        </span>
+    </a>
+</td>
+                            <td>
+                                <span class="badge badge-{{ booking.status|lower }}">
+                                    {{ booking.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if booking.technician and booking.technician.phone and booking.technician.phone != 'None' %}
+                                    <div style="display: flex; gap: 5px; justify-content: center;">
+                                        <a href="tel:{{ booking.technician.phone }}" 
+                                           class="contact-btn btn-small btn-call"
+                                           title="Call {{ booking.technician.username }}">
+                                            <i class="fas fa-phone"></i>
+                                        </a>
+                                        <button onclick='openChatModal(
+                                            {{ booking.id }},
+                                            {{ booking.technician.id }},
+                                            "{{ booking.technician.username }}",
+                                            "{{ booking.technician.profile_image }}",
+                                            "{{ booking.service.name }}"
+                                        ); event.stopPropagation();'
+                                                class="contact-btn btn-small btn-chat"
+                                                title="Chat with {{ booking.technician.username }}">
+                                            <i class="fas fa-comment-dots"></i>
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    <span style="color: #64748b;">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button class="btn-submit btn-small" onclick="viewBookingDetails({{ booking.id }}); event.stopPropagation();">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="no-data">
+                <i class="fas fa-history"></i>
+                <h3>No History Found</h3>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="modal" onclick="this.style.display='none'">
+    <img id="modalImage" style="max-width: 90%; max-height: 90%; border-radius: 10px;" src="">
+</div>
+
+<!-- Booking Details Modal -->
+<div id="bookingDetailsModal" class="modal" onclick="if(event.target === this) this.style.display='none'">
+    <div class="modal-content" style="width: 600px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-info-circle"></i> Booking Details</h2>
+            <span class="modal-close" onclick="document.getElementById('bookingDetailsModal').style.display='none'">✖</span>
+        </div>
+        <div id="modalBookingContent"></div>
+    </div>
+</div>
+
+<!-- Chat Modal -->
+<!-- Chat Modal -->
+<div id="chatModal" class="modal" onclick="if(event.target === this) closeChatModal()">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-comment-dots" style="color: #38bdf8;"></i> Chat with Technician</h2>
+            <span class="modal-close" onclick="closeChatModal()">✖</span>
+        </div>
+        
+        <!-- Technician Info -->
+        <div id="chatTechnicianInfo" class="tech-info-modal">
+            <!-- Dynamic content -->
+        </div>
+        
+        <!-- Chat Messages Area -->
+        <div id="chatMessages" class="chat-messages">
+            <div style="text-align: center; color: #94a3b8; padding: 30px;">
+                <i class="fas fa-comments" style="font-size: 48px; margin-bottom: 15px; color: #38bdf8;"></i>
+                <p>Start your conversation</p>
+            </div>
+        </div>
+        
+        <!-- Message Input -->
+        <div class="message-input-area">
+            <input type="text" id="chatMessageInput" class="message-input" placeholder="Type your message..." 
+                   onkeypress="if(event.key === 'Enter') sendChatMessage()">
+            <button onclick="sendChatMessage()" class="send-btn" id="sendChatBtn">
+                <i class="fas fa-paper-plane"></i> Send
+            </button>
+        </div>
+    </div>
+</div>
+<footer>
+    <p>© 2026 TechnoFix AI. All rights reserved.</p>
+</footer>
+
+<script>
+    // ==================== GLOBAL VARIABLES ====================
+    let currentChatBooking = null;
+    let currentChatTechnician = null;
+    let currentChatTechId = null;
+    let chatRefreshInterval = null;
+
+    // ==================== TAB SWITCHING ====================
+    function switchTab(tab){
+        document.getElementById("currentBookings").style.display = tab === "current" ? "block" : "none";
+        document.getElementById("bookingHistory").style.display = tab === "history" ? "block" : "none";
+
+        document.getElementById("tabCurrent").classList.remove("active");
+        document.getElementById("tabHistory").classList.remove("active");
+
+        if(tab === "current"){
+            document.getElementById("tabCurrent").classList.add("active");
+        } else {
+            document.getElementById("tabHistory").classList.add("active");
+        }
+    }
+
+    // ==================== CHAT FUNCTIONS ====================
+    function openChatModal(bookingId, techId, techName, techImage, serviceName) {
+        const modal = document.getElementById('chatModal');
+        const infoDiv = document.getElementById('chatTechnicianInfo');
+        const messagesDiv = document.getElementById('chatMessages');
+        
+        currentChatBooking = bookingId;
+        currentChatTechnician = techName;
+        currentChatTechId = techId;
+        
+        // Create technician avatar HTML
+        let avatarHtml = '';
+        if (techImage && techImage != 'None' && techImage != '') {
+            avatarHtml = `<img src="/static/uploads/${techImage}" alt="${techName}">`;
+        } else {
+            avatarHtml = `<i class="fas fa-user"></i>`;
+        }
+        
+        // Display technician info
+        infoDiv.innerHTML = `
+            <div class="tech-avatar">
+                ${avatarHtml}
+            </div>
+            <div class="tech-details">
+                <h4><i class="fas fa-comment-dots" style="color: #38bdf8;"></i> ${techName}</h4>
+                <p><i class="fas fa-tools"></i> ${serviceName} • <i class="fas fa-hashtag"></i> #${bookingId}</p>
+            </div>
+        `;
+        
+        // Reset messages
+        messagesDiv.innerHTML = `
+            <div style="text-align: center; color: #94a3b8; padding: 30px;">
+                <i class="fas fa-comments" style="font-size: 48px; margin-bottom: 15px; color: #38bdf8;"></i>
+                <p>Start conversation with <strong style="color: #38bdf8;">${techName}</strong></p>
+            </div>
+        `;
+        
+        modal.style.display = 'flex';
+        
+        // Auto-refresh messages every 5 seconds
+        if (chatRefreshInterval) clearInterval(chatRefreshInterval);
+        chatRefreshInterval = setInterval(() => loadChatMessages(bookingId), 5000);
+    }
+
+    function closeChatModal() {
+        document.getElementById('chatModal').style.display = 'none';
+        currentChatBooking = null;
+        currentChatTechnician = null;
+        currentChatTechId = null;
+        if (chatRefreshInterval) {
+            clearInterval(chatRefreshInterval);
+            chatRefreshInterval = null;
+        }
+    }
+
+    // ========== LOAD CHAT MESSAGES ==========
+function loadChatMessages(bookingId) {
+    fetch(`/get_chat_messages/${bookingId}`)
+        .then(response => response.json())
+        .then(data => {
+            displayMessages(data.messages);
+        })
+        .catch(error => {
+            console.error('Error loading messages:', error);
+        });
+}
+
+// ========== DISPLAY MESSAGES ==========
+function displayMessages(messages) {
+    const messagesDiv = document.getElementById('chatMessages');
+    const currentUserId = {{ session['user_id'] }};
+    
+    if (!messages || messages.length === 0) {
+        messagesDiv.innerHTML = `
+            <div style="text-align: center; color: #94a3b8; padding: 30px;">
+                <i class="fas fa-comments" style="font-size: 48px; margin-bottom: 15px; color: #38bdf8;"></i>
+                <p>No messages yet. Start the conversation!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '';
+    
+    messages.forEach(msg => {
+        const isMine = msg.sender_id == currentUserId;
+        html += `
+            <div class="message-bubble ${isMine ? 'my-message' : 'their-message'}" 
+                 style="align-self: ${isMine ? 'flex-end' : 'flex-start'};">
+                ${!isMine ? `<div class="message-sender">${escapeHtml(msg.sender_name)} (Technician)</div>` : ''}
+                <div>${escapeHtml(msg.message)}</div>
+                <div class="message-time">${msg.created_at || ''}</div>
+            </div>
+        `;
+    });
+    
+    messagesDiv.innerHTML = html;
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+    function sendChatMessage() {
+    const input = document.getElementById('chatMessageInput');
+    const message = input.value.trim();
+    
+    if (!message) {
+        showNotification('Please type a message', 'danger');
+        return;
+    }
+    
+    if (!currentChatBooking) {
+        showNotification('Chat session expired. Please reopen chat.', 'danger');
+        return;
+    }
+    
+    // Show loading
+    const sendBtn = document.getElementById('sendChatBtn');
+    const originalText = sendBtn.innerHTML;
+    sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    sendBtn.disabled = true;
+    
+    // Send to server (use correct route)
+    fetch('/send_chat_message', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            booking_id: currentChatBooking,
+            message: message
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Add message to chat immediately
+            const messagesDiv = document.getElementById('chatMessages');
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            // Remove welcome message if exists
+            if (messagesDiv.children.length === 1 && messagesDiv.children[0].querySelector('.fa-comments')) {
+                messagesDiv.innerHTML = '';
+            }
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message-bubble my-message';
+            messageDiv.style.alignSelf = 'flex-end';
+            messageDiv.innerHTML = `
+                <div>${escapeHtml(message)}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            // Clear input
+            input.value = '';
+            
+            showNotification('Message sent!', 'success');
+            
+            // Reload messages after 1 second to get technician reply
+            setTimeout(() => {
+                loadChatMessages(currentChatBooking);
+            }, 1000);
+        } else {
+            showNotification('Error: ' + (data.error || 'Unknown error'), 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Error sending message', 'danger');
+    })
+    .finally(() => {
+        sendBtn.innerHTML = originalText;
+        sendBtn.disabled = false;
+    });
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+    function addTypingIndicator() {
+        const messagesDiv = document.getElementById('chatMessages');
+        
+        // Remove existing typing indicator
+        removeTypingIndicator();
+        
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'typing-indicator';
+        typingDiv.id = 'typingIndicator';
+        
+        typingDiv.innerHTML = `
+            <span></span>
+            <span></span>
+            <span></span>
+        `;
+        
+        messagesDiv.appendChild(typingDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+        const typingDiv = document.getElementById('typingIndicator');
+        if (typingDiv) {
+            typingDiv.remove();
+        }
+    }
+
+    // ==================== PRICE PREVIEW ====================
+    document.getElementById("serviceSelect")?.addEventListener("change", function(){
+        const selected = this.options[this.selectedIndex];
+        const price = selected.getAttribute("data-price");
+        const preview = document.getElementById("pricePreview");
+
+        if(price){
+            preview.innerHTML = `<i class="fas fa-tag"></i> Estimated Price: ₹${price}`;
+        } else {
+            preview.innerHTML = `<i class="fas fa-info-circle"></i> Select a service to see price`;
+        }
+    });
+   // ==================== OPEN SCANNER WITH SELECTED BOOKING ====================
+function openScannerWithBooking() {
+    const serviceSelect = document.getElementById('serviceSelect');
+    const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
+    
+    if (!serviceSelect.value) {
+        showNotification('Please select a service first!', 'danger');
+        serviceSelect.focus();
+        return;
+    }
+    
+    const price = selectedOption.getAttribute('data-price');
+    const serviceName = selectedOption.text.split(' - ')[0];
+    
+    // Create a temporary booking ID for scanner (since actual booking not created yet)
+    // We'll pass service_id and price to scanner
+    const tempBookingId = 'new_' + serviceSelect.value;
+    
+    // Store in sessionStorage for scanner to use
+    sessionStorage.setItem('temp_booking', JSON.stringify({
+        service_id: serviceSelect.value,
+        service_name: serviceName,
+        price: price
+    }));
+    
+    // Open scanner with temp data
+    window.location.href = "{{ url_for('scan_payment_temp') }}?service_id=" + serviceSelect.value + "&amount=" + price + "&service=" + encodeURIComponent(serviceName);
+}
+    // ==================== DRAG & DROP UPLOAD ====================
+    const dropArea = document.getElementById('fileUploadArea');
+    if (dropArea) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() {
+            dropArea.classList.add('dragover');
+        }
+
+        function unhighlight() {
+            dropArea.classList.remove('dragover');
+        }
+
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0) {
+                document.getElementById('fileInput').files = files;
+                previewImage(document.getElementById('fileInput'));
+            }
+        }
+    }
+
+    // ==================== IMAGE PREVIEW ====================
+    function previewImage(input){
+        const file = input.files[0];
+        if(!file) return;
+
+        if (file.size > 5 * 1024 * 1024) {
+            showNotification('File size must be less than 5MB', 'danger');
+            input.value = '';
+            return;
+        }
+
+        if (!file.type.match('image.*')) {
+            showNotification('Please select an image file (JPG, PNG, GIF)', 'danger');
+            input.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e){
+            document.getElementById("imagePreview").src = e.target.result;
+            document.getElementById("imagePreviewWrapper").style.display = "block";
+            document.getElementById("fileInfo").style.display = "flex";
+            document.getElementById("fileName").innerHTML = `<i class="fas fa-file-image"></i> ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function removeImage(){
+        document.getElementById("fileInput").value = "";
+        document.getElementById("imagePreviewWrapper").style.display = "none";
+        document.getElementById("fileInfo").style.display = "none";
+    }
+
+    // ==================== IMAGE MODAL ====================
+    function openImage(src) {
+        document.getElementById('modalImage').src = src;
+        document.getElementById('imageModal').style.display = 'flex';
+    }
+
+    // ==================== VIEW BOOKING ====================
+    function viewBooking(id){
+        window.location.href = "/booking-history?id=" + id;
+    }
+
+    // ==================== VIEW BOOKING DETAILS ====================
+    function viewBookingDetails(bookingId) {
+        fetch('/get_booking_details/' + bookingId)
+        .then(response => response.json())
+        .then(booking => {
+            const content = document.getElementById('modalBookingContent');
+            
+            let urgencyClass = 'urgency-' + (booking.urgency || 'normal').toLowerCase();
+            let statusClass = 'badge-' + (booking.status || 'pending').toLowerCase();
+            
+            let html = `
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                    <h4 style="color: #38bdf8;">🔧 Service Details</h4>
+                    <p><strong>Service:</strong> ${booking.service_name || 'N/A'}</p>
+                    <p><strong>Title:</strong> ${booking.title || 'N/A'}</p>
+                    <p><strong>Description:</strong> ${booking.description || 'N/A'}</p>
+                </div>
+                
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                    <h4 style="color: #38bdf8;">📍 Location Details</h4>
+                    <p><strong>Address:</strong> ${booking.address || 'N/A'}</p>
+                    <p><strong>Room:</strong> ${booking.room || 'N/A'}</p>
+                </div>
+                
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                    <h4 style="color: #38bdf8;">📊 Status Info</h4>
+                    <p><strong>Urgency:</strong> <span class="urgency-badge ${urgencyClass}">${booking.urgency || 'Normal'}</span></p>
+                    <p><strong>Status:</strong> <span class="badge ${statusClass}">${booking.status || 'Pending'}</span></p>
+                    <p><strong>Amount:</strong> ₹${booking.payment_amount || 0}</p>
+                    <p><strong>Booked On:</strong> ${booking.created_at || 'N/A'}</p>
+                </div>
+            `;
+            
+            if (booking.image_filename) {
+                html += `
+                    <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                        <h4 style="color: #38bdf8;">📸 Problem Image</h4>
+                        <img src="/static/uploads/problems/${booking.image_filename}" 
+                             style="width: 100%; max-height: 300px; object-fit: contain; border-radius: 10px; border: 2px solid #38bdf8; cursor: pointer;"
+                             onclick="window.open(this.src, '_blank')">
+                    </div>
+                `;
+            }
+            
+            content.innerHTML = html;
+            document.getElementById('bookingDetailsModal').style.display = 'flex';
+        })
+        .catch(error => {
+            showNotification('Error loading booking details', 'danger');
+        });
+    }
+
+    // ==================== FILTER HISTORY ====================
+    function filterHistory(){
+        const search = document.getElementById("searchInput").value.toLowerCase();
+        const status = document.getElementById("statusFilter").value;
+        const rows = document.querySelectorAll(".history-row");
+
+        rows.forEach(row => {
+            const service = row.dataset.service.toLowerCase();
+            const rowStatus = row.dataset.status.toLowerCase();
+
+            let show = true;
+
+            if(search && !service.includes(search)){
+                show = false;
+            }
+
+            if(status !== "all" && rowStatus !== status){
+                show = false;
+            }
+
+            row.style.display = show ? "" : "none";
+        });
+    }
+
+    // ==================== NOTIFICATION ====================
+    function showNotification(message, type = 'info') {
+        const container = document.getElementById('flashMessages');
+        const notification = document.createElement('div');
+        notification.className = `flash-message flash-${type}`;
+        notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+        notification.onclick = function() { this.remove(); };
+        container.appendChild(notification);
+        
+        setTimeout(() => notification.remove(), 5000);
+    }
+
+    // ==================== LOADING OVERLAY ====================
+    function showLoading(){
+        document.getElementById("loadingOverlay").style.display = "flex";
+    }
+
+    function hideLoading(){
+        document.getElementById("loadingOverlay").style.display = "none";
+    }
+
+    // ==================== VALIDATE FORM ====================
+    function validateForm() {
+        const service = document.getElementById('serviceSelect').value;
+        const title = document.querySelector('input[name="title"]').value;
+        const address = document.querySelector('input[name="address"]').value;
+        const room = document.querySelector('select[name="room"]').value;
+        
+        if (!service || !title || !address || !room) {
+            showNotification('Please fill all required fields!', 'danger');
+            return false;
+        }
+        return true;
+    }
+
+    // ==================== AJAX BOOKING FORM ====================
+    document.addEventListener('DOMContentLoaded', function() {
+        const bookingForm = document.getElementById('bookingForm');
+        
+        if (bookingForm) {
+            bookingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) return;
+                
+                showLoading();
+                const formData = new FormData(this);
+                
+                fetch('/book_service_ajax', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hideLoading();
+                    
+                    if (data.success) {
+                        showNotification('✅ ' + data.message, 'success');
+                        this.reset();
+                        document.getElementById('imagePreviewWrapper').style.display = 'none';
+                        document.getElementById('fileInfo').style.display = 'none';
+                        
+                        setTimeout(() => location.reload(), 2000);
+                    } else {
+                        showNotification('❌ ' + data.message, 'danger');
+                    }
+                })
+                .catch(error => {
+                    hideLoading();
+                    showNotification('❌ Error: ' + error.message, 'danger');
+                });
+            });
+        }
+    });
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeChatModal();
+            document.getElementById('imageModal').style.display = 'none';
+            document.getElementById('bookingDetailsModal').style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>

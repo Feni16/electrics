@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Services</title>
+</head>
+<body>
+
+<h2>My Booked Services</h2>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <p style="color:green;"><b>{{ messages[0] }}</b></p>
+  {% endif %}
+{% endwith %}
+
+{% if bookings %}
+    {% for b in bookings %}
+        <hr>
+        <b>Service:</b> {{ b.service.name }} <br>
+        <b>Title:</b> {{ b.title }} <br>
+        <b>Status:</b> {{ b.status }} <br>
+        <b>Urgency:</b> {{ b.urgency }} <br>
+        <b>Room:</b> {{ b.room }} <br>
+        <b>Address:</b> {{ b.address }} <br>
+    {% endfor %}
+{% else %}
+    <p>No bookings found</p>
+{% endif %}
+
+</body>
+</html>

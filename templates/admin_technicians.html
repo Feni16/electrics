@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technicians | Admin - TechnoFix AI</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== CUSTOMER PAGE JEM EXACT STYLE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: #fff;
+            display: flex;
+        }
+
+        /* ---------- SIDEBAR ---------- */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #111827;
+            padding: 30px 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #38bdf8;
+            margin-bottom: 40px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            transform: translateX(5px);
+        }
+
+        .sidebar a.active {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        /* ---------- MAIN CONTENT ---------- */
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 30px;
+        }
+
+        /* ---------- TOPBAR ---------- */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .welcome h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        /* ===== STATS CARDS - 6 CARDS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(56, 189, 248, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #38bdf8;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            background: rgba(56, 189, 248, 0.2);
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .stat-card h4 {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-card .number {
+            font-size: 24px;
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        /* ---------- SEARCH & FILTER ---------- */
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .search-filter input,
+        .search-filter select {
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-filter input:focus,
+        .search-filter select:focus {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .search-filter input {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-filter select option {
+            background: #0f172a;
+            color: #fff;
+        }
+
+        /* ---------- ADD BUTTON ---------- */
+        .add-btn {
+            background: #22c55e;
+            color: #000;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        /* ---------- TABLE ---------- */
+        .table-container {
+            overflow-x: auto;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            padding: 5px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1300px;
+        }
+
+        th {
+            background: #38bdf8;
+            color: #000;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: #cbd5e1;
+        }
+
+        tr {
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        tr:hover {
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        /* ---------- BADGES ---------- */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-active {
+            background: #22c55e;
+            color: #000;
+        }
+        .status-busy {
+            background: #f97316;
+            color: #000;
+        }
+        .status-offline {
+            background: #64748b;
+            color: #fff;
+        }
+        .status-inactive {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .specialization-badge {
+            background: rgba(56, 189, 248, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            border: 1px solid #38bdf8;
+        }
+
+        /* ---------- RATING STARS ---------- */
+        .rating-stars {
+            color: #fbbf24;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+
+        .rating-stars i {
+            font-size: 14px;
+        }
+
+        .rating-stars span {
+            color: #94a3b8;
+            margin-left: 5px;
+            font-size: 12px;
+        }
+
+        /* ---------- PROGRESS BAR ---------- */
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #38bdf8;
+            border-radius: 10px;
+        }
+
+        /* ---------- ACTION BUTTONS ---------- */
+        .action-btn {
+            padding: 6px 12px;
+            background: #38bdf8;
+            border: none;
+            border-radius: 6px;
+            color: #000;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 0 3px;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            background: #facc15;
+        }
+
+        .action-btn.edit {
+            background: #f97316;
+            color: #000;
+        }
+
+        .action-btn.delete {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .action-btn.view {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .action-btn.rate {
+            background: #fbbf24;
+            color: #000;
+        }
+
+        /* ===== MODAL STYLES - CUSTOMER PAGE JEM ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 20px;
+            width: 750px;
+            max-width: 95%;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid #38bdf8;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #ef4444;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close:hover {
+            transform: scale(1.2);
+        }
+
+        /* ---------- FORM STYLES (ADD TECHNICIAN) ---------- */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group select::placeholder,
+        .form-group textarea::placeholder {
+            color: #64748b;
+        }
+
+        .form-group select option {
+            background: #1e293b;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .submit-btn {
+            background: #38bdf8;
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #22c55e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .form-group small {
+            color: #94a3b8;
+            font-size: 11px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* ---------- MODAL SECTIONS ---------- */
+        .modal-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .modal-section h4 {
+            color: #38bdf8;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .info-item {
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .info-item .label {
+            color: #94a3b8;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .info-item .value {
+            color: #38bdf8;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* ---------- RATING MODAL ---------- */
+        .rating-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .rating-stars-input {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .rating-stars-input i {
+            color: #475569;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .rating-stars-input i.active,
+        .rating-stars-input i:hover {
+            color: #fbbf24;
+        }
+
+        .rating-value {
+            color: #38bdf8;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* ---------- PERFORMANCE CARDS ---------- */
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .performance-card {
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #38bdf8;
+            transition: 0.3s;
+        }
+
+        .performance-card:hover {
+            transform: translateY(-3px);
+            background: rgba(56, 189, 248, 0.2);
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .performance-card h3 {
+            color: #38bdf8;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+
+        .performer-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+
+        .performer-item:hover {
+            background: rgba(56, 189, 248, 0.1);
+            transform: translateX(5px);
+        }
+
+        .rank-badge {
+            width: 30px;
+            height: 30px;
+            background: #fbbf24;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .performer-info {
+            flex: 1;
+        }
+
+        .performer-name {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .performer-stats {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .spec-name {
+            width: 80px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .spec-bar {
+            flex: 1;
+            height: 8px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .spec-fill {
+            height: 100%;
+            background: #38bdf8;
+            border-radius: 10px;
+        }
+
+        .spec-count {
+            color: #38bdf8;
+            font-weight: 600;
+            font-size: 13px;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        /* ---------- TOAST ---------- */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #38bdf8;
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 3000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 5px 20px rgba(56, 189, 248, 0.5);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px;
+            color: #94a3b8;
+        }
+
+        .no-data i {
+            font-size: 48px;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(56, 189, 248, 0.3);
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SIDEBAR -->
+        <div class="sidebar">
+        <h2><i class="fas fa-bolt"></i> TechnoFix AI</h2>
+        <a href="{{ url_for('admin_dashboard') }}" {% if request.endpoint == 'admin_dashboard' %}class="active"{% endif %}>
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        <a href="{{ url_for('admin_customers') }}" {% if request.endpoint == 'admin_customers' %}class="active"{% endif %}>
+            <i class="fas fa-users"></i> Customers
+        </a>
+        <a href="{{ url_for('admin_technicians') }}" {% if request.endpoint == 'admin_technicians' %}class="active"{% endif %}>
+            <i class="fas fa-tools"></i> Technicians
+        </a>
+        <a href="{{ url_for('admin_bookings') }}" {% if request.endpoint == 'admin_bookings' %}class="active"{% endif %}>
+            <i class="fas fa-calendar-check"></i> Bookings
+        </a>
+        <a href="{{ url_for('admin_ai_chats') }}" {% if request.endpoint == 'admin_ai_chats' %}class="active"{% endif %}>
+            <i class="fas fa-robot"></i> AI Chats
+        </a>
+        <!-- Human Chats Link -->
+        <a href="{{ url_for('admin_human_chats') }}" {% if request.endpoint == 'admin_human_chats' %}class="active"{% endif %}>
+            <i class="fas fa-comments"></i> Customer ⇔ Tech Chats
+        </a>
+        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="welcome">
+                <h1>Technician Management</h1>
+                <p>Manage all registered technicians and their performance</p>
+            </div>
+            <a href="{{ url_for('admin_dashboard') }}" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+
+        <!-- STATS CARDS - 6 Cards -->
+        <div class="stats-grid">
+            <div class="stat-card" onclick="filterByStatus('all')">
+                <h4>📊 Total Technicians</h4>
+                <div class="number">{{ total_technicians }}</div>
+            </div>
+            <div class="stat-card" onclick="filterByStatus('active')">
+                <h4>✅ Active</h4>
+                <div class="number">{{ active_technicians }}</div>
+            </div>
+            <div class="stat-card" onclick="filterByStatus('busy')">
+                <h4>⏳ Busy</h4>
+                <div class="number">{{ busy_technicians | default(0) }}</div>
+            </div>
+            <div class="stat-card" onclick="filterByStatus('completed')">
+                <h4>✅ Completed Jobs</h4>
+                <div class="number">{{ total_completed_jobs | default(0) }}</div>
+            </div>
+            <div class="stat-card" onclick="filterByStatus('pending')">
+                <h4>⏳ Pending Jobs</h4>
+                <div class="number">{{ total_pending_jobs | default(0) }}</div>
+            </div>
+            <div class="stat-card">
+                <h4>💰 Total Earnings</h4>
+                <div class="number">₹{{ total_earnings | default(0) }}</div>
+            </div>
+        </div>
+
+        <!-- SEARCH & FILTER AND ADD BUTTON -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
+            <div class="search-filter" style="flex: 1; margin-bottom: 0;">
+                <input type="text" id="searchInput" placeholder="🔍 Search by name, email, phone, specialization..." onkeyup="filterTechnicians()">
+                <select id="statusFilter" class="filter-select" onchange="filterTechnicians()">
+                    <option value="all">📊 All Status</option>
+                    <option value="active">✅ Active</option>
+                    <option value="busy">⏳ Busy</option>
+                    <option value="offline">📴 Offline</option>
+                    <option value="inactive">❌ Inactive</option>
+                </select>
+                <select id="specializationFilter" class="filter-select" onchange="filterTechnicians()">
+                    <option value="all">🔧 All Specializations</option>
+                    {% set specializations = [] %}
+                    {% for t in technicians %}
+                        {% if t.specialization and t.specialization not in specializations %}
+                            {% set specializations = specializations.append(t.specialization) %}
+                            <option value="{{ t.specialization }}">{{ t.specialization }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- ADD TECHNICIAN BUTTON -->
+            <button class="add-btn" onclick="openAddTechnicianModal()">
+                <i class="fas fa-plus-circle"></i> Add New Technician
+            </button>
+        </div>
+
+        <!-- TECHNICIANS TABLE -->
+        <div class="table-container">
+            <table id="techniciansTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Technician</th>
+                        <th>Contact</th>
+                        <th>Location</th>
+                        <th>Specialization</th>
+                        <th>Status</th>
+                        <th>Rating</th>
+                        <th>Jobs</th>
+                        <th>Salary</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in technicians %}
+                    <tr class="clickable-row" data-technician='{{ t|tojson|safe }}' 
+                        data-status="{{ t.status|lower }}" 
+                        data-specialization="{{ t.specialization }}">
+                        
+                        <td>#{{ t.id }}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 35px; height: 35px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-weight: 600;">
+                                    {{ t.username[0]|upper }}
+                                </div>
+                                <div>
+                                    <strong>{{ t.username }}</strong>
+                                    <div style="font-size: 11px; color: #94a3b8;">ID: {{ t.id }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>{{ t.email }}</div>
+                            <div style="font-size: 12px; color: #94a3b8;">{{ t.phone or 'N/A' }}</div>
+                        </td>
+                        <td>{{ t.location or 'N/A' }}</td>
+                        <td>
+                            <span class="specialization-badge">{{ t.specialization or 'General' }}</span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-{{ t.status|lower }}">{{ t.status }}</span>
+                        </td>
+                        <td>
+                            <div class="rating-stars" data-rating="{{ t.rating }}">
+                                <!-- Stars will be generated by JavaScript -->
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column; gap: 5px;">
+                                <div style="font-size: 13px;">Total: {{ t.total_bookings }}</div>
+                                <div class="progress-bar" title="Completion Rate">
+                                    <div class="progress-fill" style="width: {% if t.total_bookings > 0 %}{{ (t.completed_bookings / t.total_bookings * 100)|int }}{% else %}0{% endif %}%"></div>
+                                </div>
+                                <div style="font-size: 11px; color: #94a3b8;">
+                                    {{ t.completed_bookings }} completed / {{ t.pending_bookings }} pending
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div><strong>₹{{ t.salary }}</strong></div>
+                            <div style="font-size: 11px; color: #94a3b8;">per month</div>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                                <!-- View button - connects to view_technician.html -->
+                                <button class="action-btn view" onclick="event.stopPropagation(); window.location.href='/admin/technician/{{ t.id }}'">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit" onclick="event.stopPropagation(); editTechnician({{ t.id }})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn rate" onclick="event.stopPropagation(); openRatingModal({{ t.id }}, '{{ t.username }}', {{ t.rating }})">
+                                    <i class="fas fa-star"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="event.stopPropagation(); deleteTechnician({{ t.id }})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="10" class="no-data">
+                            <i class="fas fa-tools"></i>
+                            <h3>No Technicians Found</h3>
+                            <p>Click the "Add New Technician" button to add your first technician.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PERFORMANCE SUMMARY -->
+        <div class="performance-grid">
+            <!-- Top Performers -->
+            <div class="performance-card">
+                <h3><i class="fas fa-trophy"></i> Top Performers</h3>
+                <div id="topPerformers">
+                    {% for t in technicians|sort(attribute='completed_bookings', reverse=true) %}
+                        {% if loop.index <= 3 %}
+                        <div class="performer-item">
+                            <div class="rank-badge">{{ loop.index }}</div>
+                            <div class="performer-info">
+                                <div class="performer-name">{{ t.username }}</div>
+                                <div class="performer-stats">{{ t.completed_bookings }} jobs completed</div>
+                            </div>
+                            <div class="rating-stars" data-rating="{{ t.rating }}"></div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Specialization Distribution -->
+            <div class="performance-card">
+                <h3><i class="fas fa-chart-pie"></i> Specializations</h3>
+                <div id="specializationDist">
+                    {% set spec_counts = {} %}
+                    {% for t in technicians %}
+                        {% set spec = t.specialization or 'General' %}
+                        {% if spec in spec_counts %}
+                            {% set _ = spec_counts.update({spec: spec_counts[spec] + 1}) %}
+                        {% else %}
+                            {% set _ = spec_counts.update({spec: 1}) %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% for spec, count in spec_counts.items() %}
+                    <div class="spec-item">
+                        <div class="spec-name">{{ spec }}</div>
+                        <div class="spec-bar">
+                            <div class="spec-fill" style="width: {{ (count / total_technicians * 100)|int if total_technicians > 0 else 0 }}%"></div>
+                        </div>
+                        <div class="spec-count">{{ count }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD/EDIT TECHNICIAN MODAL - FULLY STYLED -->
+    <div id="technicianFormModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTechnicianFormModal()">&times;</span>
+            <h3 style="color:#38bdf8; margin-bottom:20px; text-align:center;" id="formModalTitle">
+                <i class="fas fa-user-plus"></i> Add New Technician
+            </h3>
+            <form id="technicianForm" onsubmit="saveTechnician(event)">
+                <input type="hidden" id="technicianId" name="technicianId" value="">
+                
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Full Name *</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter technician name">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Email *</label>
+                        <input type="email" id="email" name="email" required placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Phone *</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="+91 98765 43210">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                        <input type="text" id="location" name="location" placeholder="City, Area">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-tools"></i> Specialization *</label>
+                        <select id="specialization" name="specialization" required>
+                            <option value="">Select Specialization</option>
+                            <option value="AC Repair">AC Repair</option>
+                            <option value="Plumbing">Plumbing</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Carpentry">Carpentry</option>
+                            <option value="Painting">Painting</option>
+                            <option value="Appliance Repair">Appliance Repair</option>
+                            <option value="Cleaning">Cleaning</option>
+                            <option value="Moving">Moving</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-dollar-sign"></i> Salary (per month) *</label>
+                        <input type="number" id="salary" name="salary" required placeholder="25000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-toggle-on"></i> Status *</label>
+                        <select id="status" name="status" required>
+                            <option value="Active">Active</option>
+                            <option value="Busy">Busy</option>
+                            <option value="Offline">Offline</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password *</label>
+                    <input type="password" id="password" name="password" placeholder="Enter password" minlength="6">
+                    <small>Required for new technician. Leave blank to keep current when editing.</small>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-save"></i> Save Technician
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VIEW TECHNICIAN MODAL (REMOVED - Now redirects to separate page) -->
+    <!-- <div id="technicianModal" class="modal"> ... </div> -->
+
+    <!-- RATING MODAL -->
+    <div id="ratingModal" class="modal">
+        <div class="modal-content" style="width: 400px;">
+            <span class="close" onclick="closeRatingModal()">&times;</span>
+            <h3 style="color:#38bdf8; margin-bottom:20px; text-align:center;">
+                <i class="fas fa-star"></i> Update Rating
+            </h3>
+            <div id="ratingModalBody"></div>
+        </div>
+    </div>
+
+    <!-- LOADING OVERLAY -->
+    <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 20000; justify-content: center; align-items: center; flex-direction: column;">
+        <div class="spinner"></div>
+        <p style="color: #38bdf8; margin-top: 20px;">Processing...</p>
+    </div>
+
+    <script>
+        // ---------- RATING STARS FUNCTION ----------
+        function renderAllRatings() {
+            document.querySelectorAll('.rating-stars[data-rating]').forEach(el => {
+                let rating = parseFloat(el.dataset.rating) || 0;
+                el.innerHTML = getRatingStars(rating);
+            });
+        }
+
+        function getRatingStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= Math.floor(rating)) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else if (i - 0.5 <= rating) {
+                    stars += '<i class="fas fa-star-half-alt"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
+            }
+            stars += `<span>(${rating.toFixed(1)})</span>`;
+            return stars;
+        }
+
+        document.addEventListener('DOMContentLoaded', renderAllRatings);
+
+        // ---------- FILTER FUNCTION ----------
+        function filterTechnicians() {
+            let search = document.getElementById('searchInput').value.toLowerCase();
+            let status = document.getElementById('statusFilter').value;
+            let specialization = document.getElementById('specializationFilter').value;
+            
+            let rows = document.querySelectorAll('#techniciansTable tbody tr.clickable-row');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                try {
+                    let technician = JSON.parse(row.dataset.technician);
+                    let rowStatus = row.dataset.status;
+                    let rowSpecialization = row.dataset.specialization || 'General';
+                    
+                    let matchesSearch = (technician.username || '').toLowerCase().includes(search) ||
+                                       (technician.email || '').toLowerCase().includes(search) ||
+                                       (technician.phone || '').toLowerCase().includes(search) ||
+                                       (technician.specialization || '').toLowerCase().includes(search) ||
+                                       (technician.location || '').toLowerCase().includes(search);
+                    
+                    let matchesStatus = status === 'all' || rowStatus === status;
+                    let matchesSpecialization = specialization === 'all' || rowSpecialization === specialization;
+                    
+                    if (matchesSearch && matchesStatus && matchesSpecialization) {
+                        row.style.display = '';
+                        visibleCount++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                } catch(e) {
+                    console.log('Error parsing technician data', e);
+                }
+            });
+            
+            showToast(`Found ${visibleCount} technicians`);
+        }
+
+        function filterByStatus(status) {
+            document.getElementById('statusFilter').value = status;
+            filterTechnicians();
+        }
+
+        // ---------- MODAL FUNCTIONS ----------
+        function closeTechnicianFormModal() {
+            document.getElementById('technicianFormModal').style.display = 'none';
+        }
+
+        function closeRatingModal() {
+            document.getElementById('ratingModal').style.display = 'none';
+        }
+
+        // ---------- ADD TECHNICIAN ----------
+        function openAddTechnicianModal() {
+            document.getElementById('formModalTitle').innerHTML = '<i class="fas fa-user-plus"></i> Add New Technician';
+            document.getElementById('technicianForm').reset();
+            document.getElementById('technicianId').value = '';
+            document.getElementById('password').required = true;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Save Technician';
+            document.getElementById('technicianFormModal').style.display = 'flex';
+        }
+
+        function editTechnician(technicianId) {
+            let rows = document.querySelectorAll('#techniciansTable tbody tr');
+            for (let row of rows) {
+                try {
+                    let technician = JSON.parse(row.dataset.technician);
+                    if (technician.id == technicianId) {
+                        document.getElementById('formModalTitle').innerHTML = '<i class="fas fa-user-edit"></i> Edit Technician';
+                        document.getElementById('technicianId').value = technician.id;
+                        document.getElementById('username').value = technician.username;
+                        document.getElementById('email').value = technician.email;
+                        document.getElementById('phone').value = technician.phone || '';
+                        document.getElementById('location').value = technician.location || '';
+                        document.getElementById('specialization').value = technician.specialization || '';
+                        document.getElementById('salary').value = technician.salary || '';
+                        document.getElementById('status').value = technician.status;
+                        document.getElementById('password').required = false;
+                        document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Update Technician';
+                        document.getElementById('technicianFormModal').style.display = 'flex';
+                        break;
+                    }
+                } catch(e) {}
+            }
+        }
+
+        function saveTechnician(event) {
+            event.preventDefault();
+            showToast('✅ Technician saved successfully');
+            closeTechnicianFormModal();
+            setTimeout(() => location.reload(), 1000);
+        }
+
+        // ---------- VIEW TECHNICIAN (REMOVED - Now uses separate page) ----------
+        // The view button now uses window.location.href directly
+
+        // ---------- RATING MODAL ----------
+        function openRatingModal(technicianId, technicianName, currentRating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                let activeClass = i <= Math.round(currentRating) ? 'active' : '';
+                stars += `<i class="fas fa-star ${activeClass}" onclick="setRating(${i})" onmouseover="hoverRating(${i})" onmouseout="resetRating()"></i>`;
+            }
+            
+            let content = `
+                <div class="rating-container">
+                    <h4 style="color: #fff;">${technicianName}</h4>
+                    <div class="rating-stars-input" id="ratingStarsInput">
+                        ${stars}
+                    </div>
+                    <div class="rating-value" id="ratingValue">${currentRating.toFixed(1)}</div>
+                    <div style="display: flex; gap: 10px; width: 100%;">
+                        <button class="action-btn" onclick="submitRating(${technicianId})" style="flex: 1; padding: 12px; background: #38bdf8;">
+                            <i class="fas fa-check"></i> Save Rating
+                        </button>
+                        <button class="action-btn delete" onclick="closeRatingModal()" style="flex: 1; padding: 12px;">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('ratingModalBody').innerHTML = content;
+            document.getElementById('ratingModal').style.display = 'flex';
+        }
+
+        function hoverRating(rating) {
+            let stars = document.querySelectorAll('#ratingStarsInput i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.style.color = '#fbbf24';
+                } else {
+                    star.style.color = '#475569';
+                }
+            });
+        }
+
+        function resetRating() {
+            let currentRating = parseFloat(document.getElementById('ratingValue').textContent);
+            let stars = document.querySelectorAll('#ratingStarsInput i');
+            stars.forEach((star, index) => {
+                if (index < Math.round(currentRating)) {
+                    star.style.color = '#fbbf24';
+                } else {
+                    star.style.color = '#475569';
+                }
+            });
+        }
+
+        function setRating(rating) {
+            document.getElementById('ratingValue').textContent = rating.toFixed(1);
+            hoverRating(rating);
+        }
+
+        function submitRating(technicianId) {
+            let newRating = parseFloat(document.getElementById('ratingValue').textContent);
+            showToast(`✅ Rating updated to ${newRating.toFixed(1)}`);
+            closeRatingModal();
+            setTimeout(() => location.reload(), 1000);
+        }
+
+        // ---------- DELETE TECHNICIAN ----------
+        function deleteTechnician(technicianId) {
+            if (confirm('Are you sure you want to delete this technician? This action cannot be undone.')) {
+                showLoading();
+                fetch(`/admin/technician/${technicianId}/delete`, { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    hideLoading();
+                    if (data.success) {
+                        showToast('✅ Technician deleted successfully');
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        showToast('❌ Error deleting technician: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(err => {
+                    hideLoading();
+                    console.error(err);
+                    showToast('❌ Network error');
+                });
+            }
+        }
+
+        // ---------- TOAST ----------
+        function showToast(message) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        // ---------- CLICK ROW HANDLER (Updated to redirect to view page) ----------
+        document.querySelectorAll('.clickable-row').forEach(row => {
+            row.addEventListener('click', function(e) {
+                if (e.target.closest('.action-btn')) return;
+                
+                let technician = JSON.parse(this.dataset.technician);
+                window.location.href = `/admin/technician/${technician.id}`;
+            });
+        });
+
+        // ---------- CLOSE MODALS ----------
+        window.onclick = function(event) {
+            const modals = ['technicianFormModal', 'ratingModal'];
+            modals.forEach(id => {
+                const modal = document.getElementById(id);
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        };
+    </script>
+</body>
+</html>

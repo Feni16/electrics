@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | TechnoFix AI</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+       /* LIGHT MODE */
+.light-mode{
+background:#f1f5f9;
+color:#000;
+}
+.light-mode .card{
+background:#fff;
+color:#000;
+}
+.light-mode header{
+background:#ffffff;
+}
+
+/* HEADER */
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 50px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+/* Header Profile Image Avatar */
+.user-info-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #38bdf8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.user-avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #38bdf8;
+}
+.logo{
+font-size:1.6rem;
+font-weight:600;
+background:linear-gradient(90deg,#38bdf8,#7dd3fc);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.user-box{
+text-align:right;
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+}
+
+.header-actions{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.notification{
+cursor:pointer;
+font-size:20px;
+}
+
+.user-box a{
+margin-top:5px;
+padding:6px 15px;
+background:#ef4444;
+border-radius:8px;
+font-weight:600;
+text-decoration:none;
+color:#fff;
+transition:.3s;
+}
+
+.user-box a:hover{
+transform:scale(1.05);
+}
+
+.btn-back{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:8px 15px;
+background:rgba(255,255,255,0.05);
+border-radius:8px;
+margin:20px 0;
+margin-left: 150px;
+color:#94a3b8;
+text-decoration:none;
+transition:0.3s;
+}
+.btn-back:hover{
+background:rgba(255,255,255,0.1);
+color:#38bdf8;
+transform:scale(1.05);
+}
+
+        /* CONTAINER */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Flash Messages */
+        .flash-message {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .flash-success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid #4ade80;
+            color: #4ade80;
+        }
+
+        .flash-danger {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #f87171;
+            color: #f87171;
+        }
+
+        /* PROFILE CARD */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Avatar Section */
+        .avatar-section {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #38bdf8;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+        }
+
+        .avatar-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 2px solid #fff;
+        }
+
+        .avatar-overlay:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #38bdf8;
+        }
+
+        .avatar-overlay i {
+            color: #000;
+            font-size: 18px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        label i {
+            color: #38bdf8;
+            margin-right: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        input[readonly] {
+            background: rgba(255, 255, 255, 0.02);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .photo-input {
+            display: none;
+        }
+
+        /* Button */
+        .btn-save {
+            padding: 16px 30px;
+            width: 100%;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            color: #000;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-save:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 25px rgba(56, 189, 248, 0.5);
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(56, 189, 248, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px dashed #38bdf8;
+        }
+
+        .info-box p {
+            color: #94a3b8;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box i {
+            color: #38bdf8;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: rgba(2, 6, 23, 0.7);
+            color: #94a3b8;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .profile-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">TechnoFix</div>
+
+<div class="header-actions">
+
+<div class="user-info-wrapper">
+
+    <a href="{{ url_for('profile_page') }}">
+        <img src="{{ url_for('static', filename='uploads/' + (user.profile_image if user and user.profile_image else 'default.png')) }}"
+             class="user-avatar">
+    </a>
+
+    <div class="user-box">
+        <div style="font-weight:600;">
+            {{ user.username if user else 'Guest' }}
+        </div>
+
+        <div style="color:#94a3b8; font-size:12px;">
+            {{ session.get('role', 'User') }}
+        </div>
+
+        <a href="{{ url_for('logout') }}">
+           Logout
+        </a>
+    </div>
+
+</div>
+
+</div>
+
+</header>
+<div class="back-button">
+    <a href="{{ url_for('customer_dashboard') }}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+<div class="container">
+    <h1 class="page-title">
+        <i class="fas fa-user-circle"></i>
+        My Profile
+    </h1>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message flash-{{ category }}">
+                    <i class="fas fa-{% if category == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="profile-card">
+        <form method="POST" action="{{ url_for('update_profile') }}" enctype="multipart/form-data">
+            <!-- Avatar Section -->
+            <div class="avatar-section">
+                <div class="avatar-wrapper">
+                    <img src="{{ url_for('static', filename='uploads/' + (user.profile_image if user and user.profile_image else 'default.png')) }}"
+                         class="profile-avatar"
+                         id="profileAvatar"
+                         onerror="this.src='https://ui-avatars.com/api/?name={{ user.username if user else 'User' }}&background=38bdf8&color=fff&size=150'">
+                    
+                    <label for="photoInput" class="avatar-overlay">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                </div>
+                <input type="file" id="photoInput" name="photo" class="photo-input" accept="image/*" onchange="previewImage(this)">
+                <p style="color: #94a3b8; font-size: 12px; margin-top: 10px;">
+                    <i class="fas fa-info-circle"></i> Click camera icon to change photo
+                </p>
+            </div>
+
+            <!-- Form Fields -->
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-user"></i> Username
+                </label>
+                <input type="text" name="name" value="{{ user.username if user else '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-envelope"></i> Email
+                </label>
+                <input type="email" name="email" value="{{ user.email if user else '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-phone"></i> Phone Number
+                </label>
+                <input type="text" name="phone" value="{{ user.phone if user else '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-map-marker-alt"></i> Location
+                </label>
+                <input type="text" name="location" value="{{ user.location if user else '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-tag"></i> Role
+                </label>
+                <input type="text" value="{{ session.get('role', 'Customer') }}" readonly>
+            </div>
+
+            <div class="info-box">
+                <p>
+                    <i class="fas fa-clock"></i>
+                    Member since: {{ user.created_at.strftime('%B %d, %Y') if user and user.created_at else 'N/A' }}
+                </p>
+                <p>
+                    <i class="fas fa-id-card"></i>
+                    User ID: #{{ user.id if user else 'N/A' }}
+                </p>
+            </div>
+
+            <button type="submit" class="btn-save">
+                <i class="fas fa-save"></i>
+                Save Changes
+            </button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <div style="margin-bottom: 10px;">
+        <i class="fas fa-bolt" style="color: #38bdf8;"></i>
+        TechnoFix AI - Smart Service Solutions
+    </div>
+    <div style="color: #64748b; font-size: 12px;">
+        © 2026 TechnoFix AI. All rights reserved.
+    </div>
+</footer>
+
+<script>
+    // Preview image before upload
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                document.getElementById('profileAvatar').src = e.target.result;
+            };
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Auto-hide flash messages
+    setTimeout(() => {
+        const flash = document.querySelector('.flash-message');
+        if (flash) {
+            flash.style.opacity = '0';
+            flash.style.transition = 'opacity 0.5s';
+            setTimeout(() => flash.remove(), 500);
+        }
+    }, 3000);
+</script>
+
+</body>
+</html>
